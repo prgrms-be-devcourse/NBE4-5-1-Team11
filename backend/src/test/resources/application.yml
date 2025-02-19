@@ -1,0 +1,20 @@
+spring:
+  data:
+    mongodb:
+      uri: uri
+      database: database
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;NON_KEYWORDS=USER
+    username: sa
+    password:
+  jpa:
+    properties:
+      default_batch_fetch_size: 30
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
