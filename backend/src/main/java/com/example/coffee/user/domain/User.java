@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder // .build() 패턴 사용
-@Table(name = "user") // 테이블 이름 지정
+@Table(name = "users") // 테이블 이름 지정
 public class User {
 
     @Id
