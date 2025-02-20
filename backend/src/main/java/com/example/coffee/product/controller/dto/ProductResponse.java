@@ -5,9 +5,7 @@ import com.example.coffee.product.domain.Product;
 public record ProductResponse(
         Long id,
         String name,
-
         String image,
-
         int price
 ) {
     public static ProductResponse from(Product product) {

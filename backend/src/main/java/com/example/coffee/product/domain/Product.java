@@ -9,15 +9,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // 상품 id
 
     @Column(length = 64)
-    private String name;
+    private String name; // 상품 이름
 
-    private String image;
+    private String image; // 상품 이미지 URL
 
-    private int price;
+    private int price; // 상품 가격
 }

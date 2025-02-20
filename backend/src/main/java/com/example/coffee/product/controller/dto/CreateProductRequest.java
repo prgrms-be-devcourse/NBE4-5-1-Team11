@@ -4,9 +4,7 @@ import com.example.coffee.product.domain.Product;
 
 public record CreateProductRequest(
         String name,
-
         String image,
-
         int price
 ) {
     public Product toEntity() {
