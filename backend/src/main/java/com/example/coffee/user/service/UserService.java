@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,13 +32,8 @@ public class UserService {
     }
 
     public User updateUser(Long id, User updatedUser) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setName(updatedUser.getName());
-                    user.setEmail(updatedUser.getEmail());
-                    user.setPassword(updatedUser.getPassword());
-                    return userRepository.save(user);
-                }).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.save(userRepository.findById(id).orElseThrow().update(updatedUser.getName(), updatedUser.getPassword()));
+        // 너무 길어도 괜찮을까요?
     }
 
     public void deleteUser(Long id) {

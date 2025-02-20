@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity // db 테이블과 매핑
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder // .build() 패턴 사용
@@ -24,4 +23,10 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    public User update(String name, String password) {
+        this.name = name;
+        this.password = password;
+        return this; // this를 리턴해도 괜찮을까요?
+    }
 }

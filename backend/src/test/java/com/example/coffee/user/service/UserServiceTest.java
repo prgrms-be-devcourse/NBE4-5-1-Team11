@@ -75,17 +75,16 @@ class UserServiceTest {
     @Test
     @DisplayName("회원 ID로 조회 테스트")
     void getUserById(){
-        User savedUser = userService.getUserByEmail("test1@example.com").orElseThrow();
-        Optional<User> foundUser = userService.getUserById(savedUser.getId());
+        User savedUser = userService.getUserByEmail("test1@example.com");
+        User foundUser = userService.getUserById(savedUser.getId());
 
-        assertThat(foundUser).isPresent();
-        assertThat(foundUser.get().getEmail()).isEqualTo("test1@example.com");
+        assertThat(foundUser.getEmail()).isEqualTo("test1@example.com");
     }
 
     @Test
     @DisplayName("회원 정보 수정 테스트")
     void updateUser(){
-        User existingUser = userService.getUserByEmail("test1@example.com").get();
+        User existingUser = userService.getUserByEmail("test1@example.com");
         Long userId = existingUser.getId();
 
         User updatedUser = User.builder()
@@ -96,23 +95,22 @@ class UserServiceTest {
                 .build();
 
         User result = userService.updateUser(userId, updatedUser);
-        Optional<User> foundUser = userService.getUserById(userId);
+        User foundUser = userService.getUserById(userId);
 
-        assertThat(foundUser).isPresent();
-        assertThat(foundUser.get().getEmail()).isEqualTo("updated@example.com");
-        assertThat(foundUser.get().getName()).isEqualTo("변경된 홍길동");
-        assertThat(foundUser.get().getPassword()).isEqualTo("moreSecurePassword");
+        assertThat(foundUser.getEmail()).isEqualTo("updated@example.com");
+        assertThat(foundUser.getName()).isEqualTo("변경된 홍길동");
+        assertThat(foundUser.getPassword()).isEqualTo("moreSecurePassword");
     }
 
     @Test
     @DisplayName("회원 삭제 테스트")
     void deleteUser() {
-        User userToDelete = userService.getUserByEmail("test1@example.com").get();
+        User userToDelete = userService.getUserByEmail("test1@example.com");
         Long userId = userToDelete.getId();
 
         userService.deleteUser(userId);
 
-        Optional<User> foundUser = userService.getUserById(userId);
-        assertThat(foundUser).isEmpty();
+        User foundUser = userService.getUserById(userId);
+        assertThat(foundUser).isNull();
     }
 }
