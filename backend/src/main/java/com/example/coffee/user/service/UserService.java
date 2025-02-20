@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
 @Transactional
+@Service
 public class UserService {
 
     private final UserRepository userRepository;

@@ -23,10 +23,10 @@ public class UserController {
         return CreateUserResponse.from(userService.saveUser(CreateUserRequest.toEntity(request)));
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CreateUserResponse getUserByEmail(@PathVariable String email) {
-        return CreateUserResponse.from(userService.getUserByEmail(email));
+    public CreateUserResponse getUserById(@PathVariable Long id) {
+        return CreateUserResponse.from(userService.getUserById(id));
     }
 
     @GetMapping
@@ -37,15 +37,15 @@ public class UserController {
                 .toList(); // 이렇게 하면 적절한가요?
     }
 
-    @PutMapping("/{email}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CreateUserResponse updateUser(@PathVariable String email, @RequestBody CreateUserRequest request){
-        return CreateUserResponse.from(userService.updateUser(userService.getUserByEmail(email).getId(), CreateUserRequest.toEntity(request)));
+    public CreateUserResponse updateUser(@PathVariable Long id, @RequestBody CreateUserRequest request){
+        return CreateUserResponse.from(userService.updateUser(id, CreateUserRequest.toEntity(request)));
     }
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable String email){
-        userService.deleteUser(userService.getUserByEmail(email).getId());
+    public void deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
     }
 }
