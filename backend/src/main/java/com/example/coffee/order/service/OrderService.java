@@ -11,6 +11,8 @@ import com.example.coffee.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -37,4 +39,10 @@ public class OrderService {
             );
         }
     }
+
+    // 주문 전체 조회
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
 }
