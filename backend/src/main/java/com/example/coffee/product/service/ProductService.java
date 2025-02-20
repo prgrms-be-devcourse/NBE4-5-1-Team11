@@ -1,7 +1,7 @@
 package com.example.coffee.product.service;
 
-import com.example.coffee.product.controller.dto.ProductRequestDto;
-import com.example.coffee.product.controller.dto.ProductResponseDto;
+import com.example.coffee.product.controller.dto.CreateProductRequest;
+import com.example.coffee.product.controller.dto.ProductResponse;
 import com.example.coffee.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,13 +16,13 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public void createProduct(ProductRequestDto dto) {
+    public void createProduct(CreateProductRequest dto) {
         productRepository.save(dto.toEntity());
     }
 
-    public List<ProductResponseDto> getAll() {
+    public List<ProductResponse> getAll() {
         return productRepository.findAll().stream()
-                .map(ProductResponseDto::from)
+                .map(ProductResponse::from)
                 .toList();
     }
 
