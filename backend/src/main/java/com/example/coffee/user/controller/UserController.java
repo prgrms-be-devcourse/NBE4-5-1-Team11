@@ -20,7 +20,7 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
-        return CreateUserResponse.from(userService.saveUser(CreateUserRequest.toEntity(request)));
+        return CreateUserResponse.from(userService.saveUser(request));
     }
 
     @GetMapping("/{id}")
@@ -40,7 +40,7 @@ public class UserController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CreateUserResponse updateUser(@PathVariable Long id, @RequestBody CreateUserRequest request){
-        return CreateUserResponse.from(userService.updateUser(id, CreateUserRequest.toEntity(request)));
+        return CreateUserResponse.from(userService.updateUser(id, request));
     }
 
     @DeleteMapping("/{id}")

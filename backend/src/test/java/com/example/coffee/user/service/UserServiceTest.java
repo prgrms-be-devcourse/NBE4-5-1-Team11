@@ -1,5 +1,7 @@
 package com.example.coffee.user.service;
 
+import com.example.coffee.user.controller.dto.CreateUserRequest;
+import com.example.coffee.user.controller.dto.CreateUserResponse;
 import com.example.coffee.user.domain.User;
 import com.example.coffee.user.domain.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -51,13 +54,13 @@ class UserServiceTest {
     @Test
     @DisplayName("회원 저장 테스트")
      void saveUser(){
-        User newUser = User.builder()
+        CreateUserRequest userDto = CreateUserRequest.builder()
                 .email("new@example.com")
                 .name("강감찬")
                 .password("securePass")
                 .build();
 
-        User savedUser = userService.saveUser(newUser);
+        User savedUser = userService.saveUser(userDto);
 
         Optional<User> foundUser = userRepository.findByEmail("new@example.com");
         assertThat(foundUser).isPresent();
@@ -87,19 +90,16 @@ class UserServiceTest {
         User existingUser = userService.getUserByEmail("test1@example.com");
         Long userId = existingUser.getId();
 
-        User updatedUser = User.builder()
+        CreateUserRequest userDto = CreateUserRequest.builder()
                 .email("updated@example.com")
                 .name("변경된 홍길동")
                 .password("moreSecurePassword")
-                .id(userId)
                 .build();
 
-        User result = userService.updateUser(userId, updatedUser);
-        User foundUser = userService.getUserById(userId);
+        User updatedUser = userService.updateUser(userId, userDto);
 
-        assertThat(foundUser.getEmail()).isEqualTo("updated@example.com");
-        assertThat(foundUser.getName()).isEqualTo("변경된 홍길동");
-        assertThat(foundUser.getPassword()).isEqualTo("moreSecurePassword");
+        assertThat(updatedUser.getName()).isEqualTo("변경된 홍길동");
+        assertThat(updatedUser.getPassword()).isEqualTo("moreSecurePassword");
     }
 
     @Test
@@ -110,7 +110,8 @@ class UserServiceTest {
 
         userService.deleteUser(userId);
 
-        User foundUser = userService.getUserById(userId);
-        assertThat(foundUser).isNull();
+        assertThatThrownBy(() -> userService.getUserById(userId))
+                .isInstanceOf(RuntimeException.class)  // 💡 예외 발생 검증
+                .hasMessageContaining("User not found"); // 💡 예외 메시지 검증
     }
 }
