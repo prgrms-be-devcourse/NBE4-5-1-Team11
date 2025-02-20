@@ -1,9 +1,12 @@
 package com.example.coffee.order.controller;
 
+import com.example.coffee.order.domain.OrderProduct;
 import com.example.coffee.order.service.OrderProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/order-product")
@@ -15,8 +18,8 @@ public class OrderProductController {
     // 상품 전체 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public void findAll() {
-        orderProductService.findAll();
+    public List<OrderProduct> findAll() {
+        return orderProductService.findAll();
     }
 
     // 상품 단건 삭제
