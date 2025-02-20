@@ -5,10 +5,7 @@ import com.example.coffee.product.controller.dto.ProductResponseDto;
 import com.example.coffee.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,11 @@ public class ProductController {
     @GetMapping()
     public ResponseEntity<List<ProductResponseDto>> getAllProduct() {
         return ResponseEntity.ok(productService.getAll());
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.delete(productId);
+        return ResponseEntity.ok().build();
     }
 }

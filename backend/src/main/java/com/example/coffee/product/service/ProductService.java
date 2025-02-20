@@ -30,4 +30,8 @@ public class ProductService {
                 .map(ProductResponseDto::from)
                 .toList();
     }
+
+    public void delete(Long id) {
+        productRepository.deleteById(id);
+    }
 }
