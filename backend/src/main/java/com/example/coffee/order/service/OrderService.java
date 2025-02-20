@@ -6,8 +6,6 @@ import com.example.coffee.order.domain.Order;
 import com.example.coffee.order.domain.OrderProduct;
 import com.example.coffee.order.domain.repository.OrderProductRepository;
 import com.example.coffee.order.domain.repository.OrderRepository;
-import com.example.coffee.product.domain.Product;
-import com.example.coffee.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,6 @@ public class OrderService {
 
     // 상품 주문
     public void create(CreateOrderRequest request) {
-
         // 유저 이메일로 유저 정보 조회
 
         Order order = orderRepository.save(request.toEntity());
@@ -45,4 +42,13 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+    // 주문 단건 삭제
+    public void delete(Long id) {
+        orderRepository.deleteById(id);
+    }
+
+    // 주문 전체 삭제
+    public void deleteAll() {
+        orderRepository.deleteAll();
+    }
 }

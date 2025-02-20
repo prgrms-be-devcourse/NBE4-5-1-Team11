@@ -29,4 +29,19 @@ public class OrderController {
     public List<Order> findAll() {
         return orderService.findAll();
     }
+
+    // 주문 단건 삭제
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        orderService.delete(id);
+    }
+
+    // 주문 전체 삭제
+    @DeleteMapping()
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete() {
+        orderService.deleteAll();
+    }
+
 }
