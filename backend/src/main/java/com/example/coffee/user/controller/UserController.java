@@ -20,32 +20,35 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<CreateUserResponse> createUser(@RequestBody CreateUserRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
         User createdUser = userService.saveUser(CreateUserRequest.toEntity(request));
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(CreateUserResponse.from(createdUser));
+        return CreateUserResponse.from(createdUser);
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<CreateUserResponse> getUserByEmail(@PathVariable String email) {
+    @ResponseStatus(HttpStatus.OK)
+    public CreateUserResponse getUserByEmail(@PathVariable String email) {
         User user = userService.getUserByEmail(email).get();
-        return ResponseEntity.ok(CreateUserResponse.from(user));
+        return CreateUserResponse.from(user);
     }
 
     @GetMapping
-    public ResponseEntity<List<CreateUserResponse>> getAllUsers(){
+    @ResponseStatus(HttpStatus.OK)
+    public List<CreateUserResponse> getAllUsers(){
         List<User> users = userService.getAllUsers();
         List<CreateUserResponse> response = users.stream()
                 .map(CreateUserResponse::from)
                 .toList();
-        return ResponseEntity.ok(response);
+        return response;
     }
 
     @PutMapping("/{email}")
-    public ResponseEntity<CreateUserResponse> updateUser(@PathVariable String email, @RequestBody CreateUserRequest request){
+    @ResponseStatus(HttpStatus.OK)
+    public CreateUserResponse updateUser(@PathVariable String email, @RequestBody CreateUserRequest request){
         Long userId = userService.getUserByEmail(email).get().getId();
         User updatedUser = userService.updateUser(userId, CreateUserRequest.toEntity(request));
-        return ResponseEntity.ok(CreateUserResponse.from(updatedUser));
+        return CreateUserResponse.from(updatedUser);
     }
 
     @DeleteMapping("/{email}")
