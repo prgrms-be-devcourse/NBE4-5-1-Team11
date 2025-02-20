@@ -6,7 +6,6 @@ import com.example.coffee.user.domain.User;
 import com.example.coffee.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,40 +21,32 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
-        User createdUser = userService.saveUser(CreateUserRequest.toEntity(request));
-        return CreateUserResponse.from(createdUser);
+        return CreateUserResponse.from(userService.saveUser(CreateUserRequest.toEntity(request)));
     }
 
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     public CreateUserResponse getUserByEmail(@PathVariable String email) {
-        User user = userService.getUserByEmail(email).get();
-        return CreateUserResponse.from(user);
+        return CreateUserResponse.from(userService.getUserByEmail(email).get());
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CreateUserResponse> getAllUsers(){
-        List<User> users = userService.getAllUsers();
-        List<CreateUserResponse> response = users.stream()
+        return userService.getAllUsers().stream()
                 .map(CreateUserResponse::from)
-                .toList();
-        return response;
+                .toList(); // 이렇게 하면 적절한가요?
     }
 
     @PutMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     public CreateUserResponse updateUser(@PathVariable String email, @RequestBody CreateUserRequest request){
-        Long userId = userService.getUserByEmail(email).get().getId();
-        User updatedUser = userService.updateUser(userId, CreateUserRequest.toEntity(request));
-        return CreateUserResponse.from(updatedUser);
+        return CreateUserResponse.from(userService.updateUser(userService.getUserByEmail(email).get().getId(), CreateUserRequest.toEntity(request)));
     }
 
     @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String email){
-        Long userId = userService.getUserByEmail(email).get().getId();
-        userService.deleteUser(userId);
+        userService.deleteUser(userService.getUserByEmail(email).get().getId());
     }
-
 }
