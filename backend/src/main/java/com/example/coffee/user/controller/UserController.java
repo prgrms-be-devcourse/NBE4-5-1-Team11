@@ -2,7 +2,6 @@ package com.example.coffee.user.controller;
 
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
-import com.example.coffee.user.domain.User;
 import com.example.coffee.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ public class UserController {
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     public CreateUserResponse getUserByEmail(@PathVariable String email) {
-        return CreateUserResponse.from(userService.getUserByEmail(email).get());
+        return CreateUserResponse.from(userService.getUserByEmail(email));
     }
 
     @GetMapping
@@ -41,12 +40,12 @@ public class UserController {
     @PutMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     public CreateUserResponse updateUser(@PathVariable String email, @RequestBody CreateUserRequest request){
-        return CreateUserResponse.from(userService.updateUser(userService.getUserByEmail(email).get().getId(), CreateUserRequest.toEntity(request)));
+        return CreateUserResponse.from(userService.updateUser(userService.getUserByEmail(email).getId(), CreateUserRequest.toEntity(request)));
     }
 
     @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String email){
-        userService.deleteUser(userService.getUserByEmail(email).get().getId());
+        userService.deleteUser(userService.getUserByEmail(email).getId());
     }
 }
