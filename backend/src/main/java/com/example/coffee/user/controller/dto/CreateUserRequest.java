@@ -9,11 +9,11 @@ public record CreateUserRequest(
         String email,
         String password
 ){
-    public static User toEntity(CreateUserRequest createUserRequest) {
+    public User toEntity() {
         return User.builder()
-                .name(createUserRequest.name)
-                .email(createUserRequest.email)
-                .password(createUserRequest.password)
+                .name(name)
+                .email(email)
+                .password(password)
                 .build();
     }
 }
