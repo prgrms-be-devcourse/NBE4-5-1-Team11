@@ -1,6 +1,7 @@
 package com.example.coffee.order.controller;
 
 import com.example.coffee.order.controller.dto.CreateOrderRequest;
+
 import com.example.coffee.order.controller.dto.OrderResponse;
 import com.example.coffee.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class OrderController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> findAll() {
+
         return orderService.findAll();
     }
 
