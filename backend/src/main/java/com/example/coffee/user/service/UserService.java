@@ -38,16 +38,6 @@ public class UserService {
     }
 
     @Transactional
-    public CreateUserResponse updateUser(Long id, CreateUserRequest userDto) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        user.update(userDto);
-
-        return CreateUserResponse.from(userRepository.save(user)); // 변경 사항을 저장
-    }
-
-    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }

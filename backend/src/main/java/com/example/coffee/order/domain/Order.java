@@ -1,6 +1,6 @@
 package com.example.coffee.order.domain;
 
-
+import com.example.coffee.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,13 +15,14 @@ import java.time.LocalDateTime;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
+    @Column(name = "order_id", nullable = false)
     private Long id; // 주문 id
     
-    @Column
-    private Long userId; // 유저 id
+    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user; // 유저
 
-    @Column
+    @Column()
     private LocalDateTime createdAt; // 주문 시간
 
     @Column

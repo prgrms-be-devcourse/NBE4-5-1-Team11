@@ -3,18 +3,22 @@ package com.example.coffee.order.controller.dto;
 import com.example.coffee.order.domain.Order;
 import com.example.coffee.order.domain.OrderProduct;
 import com.example.coffee.product.domain.Product;
+import lombok.Builder;
 
+@Builder
 public record CreateOrderProductRequest(
-    Integer quantity,
     Order order,
-    Product product
+    Product product,
+    Integer price,
+    Integer quantity
 ) {
 
     public OrderProduct toEntity() {
         return OrderProduct.builder()
-                .quantity(quantity)
                 .order(order)
                 .product(product)
+                .price(price)
+                .quantity(quantity)
                 .build();
     }
 }

@@ -16,12 +16,17 @@ public class OrderProduct {
     @Column(name = "order_product_id")
     private Long id; // 주문상품 id
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @Column
+    private Integer price; // 상품 가격
+
     @Column
     private Integer quantity; // 주문 수량
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Order order; // 주문 객체 연결
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Product product;
 }
