@@ -5,15 +5,15 @@ import lombok.Builder;
 
 @Builder
 public record CreateUserRequest(
-        String name,
-        String email,
-        String password
+//        String name,
+//        String password
+          String email
 ){
     public User toEntity() {
         return User.builder()
-                .name(name)
                 .email(email)
-                .password(password)
+                // .name(name)
+                // .password(password)
                 .build();
     }
 }

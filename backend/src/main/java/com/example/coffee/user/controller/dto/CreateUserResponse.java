@@ -6,11 +6,12 @@ import lombok.Getter;
 
 public record CreateUserResponse(
         Long id,
-        String email,
-        String name,
-        String password
+        String email
+//        String name,
+//        String password
 ){
     public static CreateUserResponse from(User user){
-        return new CreateUserResponse(user.getId(), user.getEmail(), user.getName(), user.getPassword());
+        return new CreateUserResponse(user.getId(), user.getEmail());
+        // , user.getName(), user.getPassword()
     }
 }
