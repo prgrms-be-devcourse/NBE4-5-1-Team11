@@ -20,27 +20,25 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
-        return CreateUserResponse.from(userService.saveUser(request));
+        return userService.saveUser(request);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CreateUserResponse getUserById(@PathVariable Long id) {
-        return CreateUserResponse.from(userService.getUserById(id));
+        return userService.getUserById(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CreateUserResponse> getAllUsers(){
-        return userService.getAllUsers().stream()
-                .map(CreateUserResponse::from)
-                .toList(); // 이렇게 하면 적절한가요?
+        return userService.getAllUsers(); // 이렇게 하면 적절한가요?
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CreateUserResponse updateUser(@PathVariable Long id, @RequestBody CreateUserRequest request){
-        return CreateUserResponse.from(userService.updateUser(id, request));
+        return userService.updateUser(id, request);
     }
 
     @DeleteMapping("/{id}")

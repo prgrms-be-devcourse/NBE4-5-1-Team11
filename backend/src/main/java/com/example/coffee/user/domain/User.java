@@ -1,5 +1,6 @@
 package com.example.coffee.user.domain;
 
+import com.example.coffee.user.controller.dto.CreateUserRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,9 +25,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public User update(String name, String password) {
-        this.name = name;
-        this.password = password;
-        return this; // this를 리턴해도 괜찮을까요?
+    public void update(CreateUserRequest request) {
+        name = request.name();
+        password = request.password();
+        // return this;
+        // 테스트 코드를 위해서 리턴할 필요가 없음
     }
 }

@@ -60,17 +60,17 @@ class UserServiceTest {
                 .password("securePass")
                 .build();
 
-        User savedUser = userService.saveUser(userDto);
+        CreateUserResponse response = userService.saveUser(userDto);
 
         Optional<User> foundUser = userRepository.findByEmail("new@example.com");
-        assertThat(foundUser).isPresent();
-        assertThat(foundUser.get().getName()).isEqualTo("강감찬");
+        assertThat(response).isNotNull();
+        assertThat(response.name()).isEqualTo("강감찬");
     }
 
     @Test
     @DisplayName("모든 회원 조회 테스트")
     void getAllUsers() {
-        List<User> users = userService.getAllUsers();
+        List<CreateUserResponse> users = userService.getAllUsers();
 
         assertThat(users).hasSize(2);
     }
@@ -79,9 +79,9 @@ class UserServiceTest {
     @DisplayName("회원 ID로 조회 테스트")
     void getUserById(){
         User savedUser = userService.getUserByEmail("test1@example.com");
-        User foundUser = userService.getUserById(savedUser.getId());
+        CreateUserResponse response = userService.getUserById(savedUser.getId());
 
-        assertThat(foundUser.getEmail()).isEqualTo("test1@example.com");
+        assertThat(response.email()).isEqualTo("test1@example.com");
     }
 
     @Test
@@ -96,10 +96,10 @@ class UserServiceTest {
                 .password("moreSecurePassword")
                 .build();
 
-        User updatedUser = userService.updateUser(userId, userDto);
+        CreateUserResponse response = userService.updateUser(userId, userDto);
 
-        assertThat(updatedUser.getName()).isEqualTo("변경된 홍길동");
-        assertThat(updatedUser.getPassword()).isEqualTo("moreSecurePassword");
+        assertThat(response.name()).isEqualTo("변경된 홍길동");
+        assertThat(response.password()).isEqualTo("moreSecurePassword");
     }
 
     @Test

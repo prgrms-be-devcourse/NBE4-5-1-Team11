@@ -11,38 +11,42 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public User saveUser(CreateUserRequest userDto){
-        return userRepository.save(userDto.toEntity());
+    @Transactional
+    public CreateUserResponse saveUser(CreateUserRequest userDto){
+        return CreateUserResponse.from(userRepository.save(userDto.toEntity()));
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<CreateUserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(CreateUserResponse::from)
+                .toList();
     }
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found")
-                );
+    public CreateUserResponse getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return CreateUserResponse.from(user);
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow();
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public User updateUser(Long id, CreateUserRequest userDto) {
+    @Transactional
+    public CreateUserResponse updateUser(Long id, CreateUserRequest userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.update(userDto.name(), userDto.password());
+        user.update(userDto);
 
-        return userRepository.save(user); // 변경 사항을 저장
+        return CreateUserResponse.from(userRepository.save(user)); // 변경 사항을 저장
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
