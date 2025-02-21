@@ -35,6 +35,11 @@ dependencies {
 	// 데이터베이스 설정 (개발: MySQL, 테스트: H2)// 개발 환경 - MySQL
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testRuntimeOnly 'com.h2database:h2'            // 테스트 환경 - H2
+
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 }
 
 tasks.named('test') {
