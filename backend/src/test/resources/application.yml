@@ -1,20 +1,45 @@
+server:
+  port: 8080
+
 spring:
-  data:
-    mongodb:
-      uri: uri
-      database: database
+  output:
+    ansi:
+      enabled: always
+
+  profiles:
+    active: dev
 
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=MySQL;NON_KEYWORDS=USER
+    url: jdbc:h2:./db_dev;MODE=MySQL
     username: sa
     password:
+    driver-class-name: org.h2.Driver
+    hikari:
+      auto-commit: false
+
   jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: false
     properties:
-      default_batch_fetch_size: 30
-    defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
-  h2:
-    console:
-      enabled: true
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 100
+
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.orm.jdbc.extract: TRACE
+    org.springframework.transaction.interceptor: TRACE
+
+
+
+custom:
+  jwt:
+    secret-key: abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890
+    expire-seconds: "#{5}"
