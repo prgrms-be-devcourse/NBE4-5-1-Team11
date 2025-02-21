@@ -1,6 +1,6 @@
 package com.example.coffee.order.service;
 
-import com.example.coffee.order.domain.OrderProduct;
+import com.example.coffee.order.controller.dto.OrderProductResponse;
 import com.example.coffee.order.domain.repository.OrderProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,10 @@ public class OrderProductService {
     private final OrderProductRepository orderProductRepository;
 
     // 상품 전체 조회
-    public List<OrderProduct> findAll() {
-        return orderProductRepository.findAll();
+    public List<OrderProductResponse> findAll() {
+        return orderProductRepository.findAll().stream()
+                .map(OrderProductResponse::from)
+                .toList();
     }
 
     // 상품 단건 삭제
@@ -27,5 +29,4 @@ public class OrderProductService {
     public void deleteAll() {
         orderProductRepository.deleteAll();
     }
-
 }

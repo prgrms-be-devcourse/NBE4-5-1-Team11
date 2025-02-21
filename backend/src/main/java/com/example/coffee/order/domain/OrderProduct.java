@@ -1,5 +1,6 @@
 package com.example.coffee.order.domain;
 
+import com.example.coffee.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,6 @@ public class OrderProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order; // 주문 객체 연결
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Product product;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
 }

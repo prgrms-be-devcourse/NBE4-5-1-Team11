@@ -1,7 +1,7 @@
 package com.example.coffee.order.controller;
 
 import com.example.coffee.order.controller.dto.CreateOrderRequest;
-import com.example.coffee.order.domain.Order;
+import com.example.coffee.order.controller.dto.OrderResponse;
 import com.example.coffee.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class OrderController {
     // 주문 전체 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Order> findAll() {
+    public List<OrderResponse> findAll() {
         return orderService.findAll();
     }
 
@@ -43,5 +43,4 @@ public class OrderController {
     public void delete() {
         orderService.deleteAll();
     }
-
 }
