@@ -78,17 +78,17 @@ class UserServiceTest {
     @Test
     @DisplayName("회원 ID로 조회 테스트")
     void getUserById(){
-        User savedUser = userService.getUserByEmail("test1@example.com");
-        CreateUserResponse response = userService.getUserById(savedUser.getId());
+        CreateUserResponse responseEmail = userService.getUserByEmail("test1@example.com");
+        CreateUserResponse responseId = userService.getUserById(responseEmail.id());
 
-        assertThat(response.email()).isEqualTo("test1@example.com");
+        assertThat(responseId.email()).isEqualTo("test1@example.com");
     }
 
     @Test
     @DisplayName("회원 정보 수정 테스트")
     void updateUser(){
-        User existingUser = userService.getUserByEmail("test1@example.com");
-        Long userId = existingUser.getId();
+        CreateUserResponse existingUser = userService.getUserByEmail("test1@example.com");
+        Long userId = existingUser.id();
 
         CreateUserRequest userDto = CreateUserRequest.builder()
                 .email("updated@example.com")
@@ -105,8 +105,8 @@ class UserServiceTest {
     @Test
     @DisplayName("회원 삭제 테스트")
     void deleteUser() {
-        User userToDelete = userService.getUserByEmail("test1@example.com");
-        Long userId = userToDelete.getId();
+        CreateUserResponse userToDelete = userService.getUserByEmail("test1@example.com");
+        Long userId = userToDelete.id();
 
         userService.deleteUser(userId);
 
