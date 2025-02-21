@@ -19,16 +19,15 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String password;
-
-    public void update(CreateUserRequest request) {
-        name = request.name();
-        password = request.password();
-        // return this;
-        // 테스트 코드를 위해서 리턴할 필요가 없음
-    }
+//    @Column(nullable = false)
+//    private String name;
+//
+//    @Column(nullable = false)
+//    private String password;
+//
+//    public void update(CreateUserRequest request) {
+//        name = request.name();
+//        password = request.password();
+//        // return this;
+//    }
 }

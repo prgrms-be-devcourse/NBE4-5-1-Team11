@@ -32,14 +32,14 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CreateUserResponse> getAllUsers(){
-        return userService.getAllUsers(); // 이렇게 하면 적절한가요?
+        return userService.getAllUsers();
     }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CreateUserResponse updateUser(@PathVariable Long id, @RequestBody CreateUserRequest request){
-        return userService.updateUser(id, request);
-    }
+//    @PutMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public CreateUserResponse updateUser(@PathVariable Long id, @RequestBody CreateUserRequest request){
+//        return userService.updateUser(id, request);
+//    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
