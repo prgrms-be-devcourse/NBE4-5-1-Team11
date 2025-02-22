@@ -2,6 +2,8 @@ package com.example.coffee.user.controller;
 
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
+import com.example.coffee.user.controller.dto.LoginRequest;
+import com.example.coffee.user.controller.dto.LoginResponse;
 import com.example.coffee.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse register(@RequestBody CreateUserRequest request) {
         return userService.saveUser(request);
+    }
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public LoginResponse login(@RequestBody LoginRequest request) {
+        return userService.login(request);
     }
 
 //    @PostMapping
