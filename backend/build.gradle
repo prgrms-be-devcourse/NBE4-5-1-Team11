@@ -32,15 +32,21 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	// 데이터베이스 설정 (개발: MySQL, 테스트: H2)// 개발 환경 - MySQL
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	testRuntimeOnly 'com.h2database:h2'            // 테스트 환경 - H2
 
+	// 데이터베이스 설정 (개발: MySQL, 테스트: H2)
+	runtimeOnly 'com.mysql:mysql-connector-j'   // 개발 환경 - MySQL
+	testRuntimeOnly 'com.h2database:h2'         // 테스트 환경 - H2
+
+	// ✅ Spring Security 추가 (JWT 적용을 위해 필요)
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	testImplementation 'org.springframework.security:spring-security-test'
-	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+	implementation 'org.springframework.security:spring-security-test'
+
+	// ✅ JJWT 최신 버전 (0.12.6) 추가
+	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()

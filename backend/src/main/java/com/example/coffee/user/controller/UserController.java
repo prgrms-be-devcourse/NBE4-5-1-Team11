@@ -16,12 +16,17 @@ public class UserController {
 
     private final UserService userService;
 
-
-    @PostMapping
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
+    public CreateUserResponse register(@RequestBody CreateUserRequest request) {
         return userService.saveUser(request);
     }
+
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
+//        return userService.saveUser(request);
+//    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

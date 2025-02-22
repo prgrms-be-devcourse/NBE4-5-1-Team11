@@ -7,11 +7,9 @@ import lombok.Getter;
 public record CreateUserResponse(
         Long id,
         String email
-//        String name,
-//        String password
+        // 비밀번호는 반환 안 함
 ){
     public static CreateUserResponse from(User user){
         return new CreateUserResponse(user.getId(), user.getEmail());
-        // , user.getName(), user.getPassword()
     }
 }

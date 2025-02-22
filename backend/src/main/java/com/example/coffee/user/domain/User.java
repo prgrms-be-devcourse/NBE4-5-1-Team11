@@ -22,6 +22,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Authority authority;
+
 //
 //    public void update(CreateUserRequest request) {
 //        name = request.name();
