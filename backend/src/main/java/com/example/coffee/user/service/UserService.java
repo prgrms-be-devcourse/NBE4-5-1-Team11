@@ -23,7 +23,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder; // 비밀번호 인코딩 해야 함
-    private final String secretKey = "your-base64-encoded-secret-key-here"; // ✅ JWT Secret Key
+    private final String secretKey = "your-base64-encoded-secret-key-here";
 
     @Transactional
     public CreateUserResponse saveUser(CreateUserRequest userDto){
@@ -39,9 +39,9 @@ public class UserService {
             throw new RuntimeException("Wrong password");
         }
 
-        Map<String, Object> claims = Map.of("email", user.getEmail(), "authority", user.getAuthority());
-        String accessToken = JwtUtil.Jwt.createToken(secretKey, 3600, claims); // ✅ 1시간 유효한 Access Token
-        String refreshToken = JwtUtil.Jwt.createRefreshToken(secretKey, 7); // ✅ 7일 유효한 Refresh Token
+        Map<String, Object> claims = Map.of("email", user.getEmail(), "authority", user.getAuthority().name());
+        String accessToken = JwtUtil.Jwt.createToken(secretKey, 3600, claims);
+        String refreshToken = JwtUtil.Jwt.createRefreshToken(secretKey, 7);
         return new LoginResponse(accessToken, refreshToken);
      }
 
@@ -60,16 +60,6 @@ public class UserService {
         User foundUser = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
         return CreateUserResponse.from(foundUser);
     }
-
-//    @Transactional
-//    public CreateUserResponse updateUser(Long id, CreateUserRequest userDto) {
-//        User user = userRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        user.update(userDto);
-//
-//        return CreateUserResponse.from(userRepository.save(user)); // 변경 사항을 저장
-//    }
 
     @Transactional
     public void deleteUser(Long id) {

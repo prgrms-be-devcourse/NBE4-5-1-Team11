@@ -15,25 +15,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final String secretKey = "your-base64-encoded-secret-key-here"; // JWT Secret Key
+    private final String secretKey = "your-base64-encoded-secret-key-here";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // ✅ CSRF 보호 비활성화 (JWT 사용 시 필수)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ 세션 사용 안 함
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/register", "/users/login").permitAll() // ✅ 회원가입은 인증 없이 허용
-                        .anyRequest().authenticated() // ✅ 그 외 모든 요청은 인증 필요
+                        .requestMatchers("/users/register", "/users/login").permitAll()
+                        .requestMatchers("/users").hasAuthority("ROLE_ADMIN")
+                        .anyRequest().authenticated()
 
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(secretKey), UsernamePasswordAuthenticationFilter.class); // ✅ JWT 필터 등록
+                .addFilterBefore(new JwtAuthenticationFilter(secretKey), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // ✅ 비밀번호 암호화 (BCrypt)
+        return new BCryptPasswordEncoder();
     }
 }

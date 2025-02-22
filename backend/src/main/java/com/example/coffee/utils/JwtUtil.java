@@ -2,31 +2,20 @@ package com.example.coffee.utils;
 
 import com.example.coffee.user.domain.Authority;
 import com.example.coffee.user.domain.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.crypto.SecretKey;
-import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class JwtUtil {
-//    public static class Json {
-//
-//        private static final ObjectMapper objectMapper = new ObjectMapper();
-//
-//        public static String toString(Object obj) {
-//            try {
-//                return objectMapper.writeValueAsString(obj);
-//            } catch (JsonProcessingException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
 
     public static class Jwt {
         public static String createToken(String keyString, int expireSeconds, Map<String, Object> claims) {
@@ -74,7 +63,23 @@ public class JwtUtil {
                         .build()
                         .parseSignedClaims(token)
                         .getPayload()
-                        .getSubject();
+                        .get("email", String.class);
+
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public static Authority extractAuthority(String keyString, String token) {
+            try {
+                SecretKey secretKey = Keys.hmacShaKeyFor(keyString.getBytes());
+                String role = Jwts.parser()
+                        .verifyWith(secretKey)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload()
+                        .get("authority", String.class);
+                return Authority.valueOf(role); // String → Authority 변환
             } catch (Exception e) {
                 return null;
             }
@@ -111,33 +116,16 @@ public class JwtUtil {
                     .compact();
         }
 
-        public static void setAuthentication(String email) {
-            // 1️⃣ Spring Security에서 사용할 User 객체 생성
-            User user = new User(email, "", Authority.ROLE_USER);
+        public static void setAuthentication(String email, Authority authority) {
+            User user = new User(email, "", authority);
 
-            // 2️⃣ 인증 객체 생성 (비밀번호는 null, 권한은 빈 리스트)
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(authority.name()));
+
             UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+                    new UsernamePasswordAuthenticationToken(user, null, authorities);
 
-            // 3️⃣ SecurityContext에 인증 정보 저장
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
-
-
-
-
-//        public static Map<String, Object> getPayload(String keyString, String jwtStr) {
-//
-//            SecretKey secretKey = Keys.hmacShaKeyFor(keyString.getBytes());
-//
-//            return (Map<String, Object>) Jwts
-//                    .parser()
-//                    .verifyWith(secretKey)
-//                    .build()
-//                    .parse(jwtStr)
-//                    .getPayload();
-//
-//        }
     }
 
 
