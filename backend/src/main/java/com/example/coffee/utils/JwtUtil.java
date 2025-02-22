@@ -1,11 +1,16 @@
 package com.example.coffee.utils;
 
+import com.example.coffee.user.domain.Authority;
+import com.example.coffee.user.domain.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.crypto.SecretKey;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -106,6 +111,20 @@ public class JwtUtil {
                     .compact();
         }
 
+        public static void setAuthentication(String email) {
+            // 1️⃣ Spring Security에서 사용할 User 객체 생성
+            User user = new User(email, "", Authority.ROLE_USER);
+
+            // 2️⃣ 인증 객체 생성 (비밀번호는 null, 권한은 빈 리스트)
+            UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+
+            // 3️⃣ SecurityContext에 인증 정보 저장
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+
+
+
 
 //        public static Map<String, Object> getPayload(String keyString, String jwtStr) {
 //
@@ -120,4 +139,6 @@ public class JwtUtil {
 //
 //        }
     }
+
+
 }

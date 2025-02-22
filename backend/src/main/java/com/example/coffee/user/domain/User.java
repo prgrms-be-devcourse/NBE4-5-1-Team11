@@ -26,6 +26,12 @@ public class User {
     @Column(nullable = false)
     private Authority authority;
 
+    public User(String email, String password, Authority authority) {
+        this.email = email;
+        this.password = password;
+        this.authority = authority;
+    }
+
 //
 //    public void update(CreateUserRequest request) {
 //        name = request.name();
