@@ -26,10 +26,17 @@ public class User {
     @Column(nullable = false)
     private Authority authority;
 
+    @Column(length = 500)
+    private String refreshToken;  // ✅ 리프레시 토큰 저장
+
     public User(String email, String password, Authority authority) {
         this.email = email;
         this.password = password;
         this.authority = authority;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 //

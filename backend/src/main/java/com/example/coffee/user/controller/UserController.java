@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -28,6 +29,13 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse login(@RequestBody LoginRequest request) {
         return userService.login(request);
+    }
+
+    @PostMapping("/refresh")
+    @ResponseStatus(HttpStatus.OK)
+    public LoginResponse refreshAccessToken(@RequestBody Map<String, String> request) {
+        String refreshToken = request.get("refreshToken");
+        return userService.refreshAccessToken(refreshToken);
     }
 
 //    @PostMapping

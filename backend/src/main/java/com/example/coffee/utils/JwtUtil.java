@@ -45,6 +45,8 @@ public class JwtUtil {
                         .verifyWith(secretKey)
                         .build()
                         .parse(token);
+                // token = token.trim(); // 앞뒤 공백 및 개행 문자 제거
+                System.out.println("Received Token: [" + token + "]");
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -102,7 +104,7 @@ public class JwtUtil {
             }
         }
 
-        public static String createRefreshToken(String keyString, int expireDays) {
+        public static String createRefreshToken(String keyString, int expireDays, Map<String, Object> claims) {
             SecretKey secretKey = Keys.hmacShaKeyFor(keyString.getBytes());
 
             Date issuedAt = new Date();
@@ -110,6 +112,7 @@ public class JwtUtil {
 
             return Jwts.builder()
                     .subject("refresh-token")
+                    .claims(claims)
                     .issuedAt(issuedAt)
                     .expiration(expiration)
                     .signWith(secretKey)

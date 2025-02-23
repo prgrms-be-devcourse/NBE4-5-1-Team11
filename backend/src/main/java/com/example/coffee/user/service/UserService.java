@@ -41,9 +41,37 @@ public class UserService {
 
         Map<String, Object> claims = Map.of("email", user.getEmail(), "authority", user.getAuthority().name());
         String accessToken = JwtUtil.Jwt.createToken(secretKey, 3600, claims);
-        String refreshToken = JwtUtil.Jwt.createRefreshToken(secretKey, 7);
+        String refreshToken = JwtUtil.Jwt.createRefreshToken(secretKey, 7, claims);
+
+        user.updateRefreshToken(refreshToken);
+        userRepository.save(user);
+
         return new LoginResponse(accessToken, refreshToken);
      }
+
+    @Transactional
+    public LoginResponse refreshAccessToken(String refreshToken) {
+        if (!JwtUtil.Jwt.isValidToken(secretKey, refreshToken)) {
+            throw new RuntimeException("Invalid refresh token");
+        }
+
+        String email = JwtUtil.Jwt.extractEmail(secretKey, refreshToken);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getRefreshToken().equals(refreshToken)) {
+            throw new RuntimeException("Refresh token mismatch");
+        }
+
+        Map<String, Object> claims = Map.of(
+                "email", user.getEmail(),
+                "authority", user.getAuthority().name()
+        );
+        String newAccessToken = JwtUtil.Jwt.createToken(secretKey, 3600, claims);
+
+        return new LoginResponse(newAccessToken, refreshToken);
+    }
+
 
     public List<CreateUserResponse> getAllUsers() {
         return userRepository.findAll().stream()
