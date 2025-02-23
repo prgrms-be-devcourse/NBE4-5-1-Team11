@@ -13,12 +13,12 @@ public record OrderResponse(
 ) {
 
     public static OrderResponse from(Order order) {
-        return OrderResponse.builder()
-                .id(order.getId())
-                .email(order.getUser().getEmail())
-                .address(order.getAddress())
-                .code(order.getCode())
-                .totalPrice(order.getTotalPrice())
-                .build();
+        return new OrderResponse(
+                order.getId(),
+                order.getUser().getEmail(),
+                order.getAddress(),
+                order.getCode(),
+                order.getTotalPrice()
+        );
     }
 }

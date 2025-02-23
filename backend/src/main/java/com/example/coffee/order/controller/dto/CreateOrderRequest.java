@@ -14,7 +14,7 @@ public record CreateOrderRequest(
         List<ProductRequest> products
 ) {
 
-    public Order toEntity() {
+    public Order toEntity(User user) {
         return Order.builder()
                 .user(user)
                 .address(address)

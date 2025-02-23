@@ -7,6 +7,9 @@ public record CreateUserResponse(
         String email
 ){
     public static CreateUserResponse from(User user){
-        return new CreateUserResponse(user.getId(), user.getEmail());
+        return new CreateUserResponse(
+                user.getId(),
+                user.getEmail()
+        );
     }
 }
