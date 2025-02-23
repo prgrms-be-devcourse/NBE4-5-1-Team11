@@ -5,12 +5,20 @@ import com.example.coffee.order.domain.OrderProduct;
 import com.example.coffee.product.domain.Product;
 
 public record OrderProductResponse(
-        Integer quantity,
+        Long id,
         Order order,
-        Product product
+        Product product,
+        Integer price,
+        Integer quantity
 ) {
 
     public static OrderProductResponse from(OrderProduct orderProduct) {
-        return new OrderProductResponse(orderProduct.getQuantity(), orderProduct.getOrder(), orderProduct.getProduct());
+        return new OrderProductResponse(
+                orderProduct.getId(),
+                orderProduct.getOrder(),
+                orderProduct.getProduct(),
+                orderProduct.getPrice(),
+                orderProduct.getQuantity()
+        );
     }
 }

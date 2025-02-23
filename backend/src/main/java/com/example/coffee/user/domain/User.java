@@ -1,8 +1,10 @@
 package com.example.coffee.user.domain;
 
-import com.example.coffee.user.controller.dto.CreateUserRequest;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity // db 테이블과 매핑
 @Getter
@@ -19,15 +21,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-//    @Column(nullable = false)
-//    private String name;
-//
-//    @Column(nullable = false)
-//    private String password;
-//
-//    public void update(CreateUserRequest request) {
-//        name = request.name();
-//        password = request.password();
-//        // return this;
-//    }
+    public User(String email) {
+        this.email = email;
+    }
 }

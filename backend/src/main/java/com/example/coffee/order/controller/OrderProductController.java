@@ -29,12 +29,4 @@ public class OrderProductController {
     public void delete(@PathVariable Long id) {
         orderProductService.delete(id);
     }
-
-    // 상품 전체 삭제
-    @DeleteMapping()
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete() {
-        orderProductService.deleteAll();
-    }
-
 }
