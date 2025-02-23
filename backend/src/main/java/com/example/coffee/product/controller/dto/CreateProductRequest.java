@@ -4,13 +4,12 @@ import com.example.coffee.product.domain.Product;
 
 public record CreateProductRequest(
         String name,
-        String image,
         int price
 ) {
-    public Product toEntity() {
+    public Product toEntity(String fileName) {
         return Product.builder()
                 .name(name)
-                .image(image)
+                .image(fileName)
                 .price(price)
                 .build();
     }

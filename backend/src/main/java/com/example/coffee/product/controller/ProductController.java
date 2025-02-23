@@ -6,6 +6,7 @@ import com.example.coffee.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,8 +19,9 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@RequestBody CreateProductRequest dto) {
-        productService.createProduct(dto);
+    public void createProduct(@RequestPart(value = "product") CreateProductRequest dto,
+                              @RequestPart(value = "image") MultipartFile image) {
+        productService.createProduct(dto, image);
     }
 
     @GetMapping
