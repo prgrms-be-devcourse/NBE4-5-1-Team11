@@ -16,7 +16,6 @@ public class UserController {
 
     private final UserService userService;
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
@@ -34,6 +33,12 @@ public class UserController {
     public List<CreateUserResponse> getAllUsers(){
         return userService.getAllUsers();
     }
+
+//    @PutMapping("/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public CreateUserResponse updateUser(@PathVariable Long id, @RequestBody CreateUserRequest request){
+//        return userService.updateUser(id, request);
+//    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
