@@ -5,14 +5,14 @@ import com.example.coffee.product.domain.Product;
 public record ProductResponse(
         Long id,
         String name,
-        String image,
+        byte[] image,
         int price
 ) {
-    public static ProductResponse from(Product product) {
+    public static ProductResponse of(Product product, byte[] imageBytes) {
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
-                product.getImage(),
+                imageBytes,
                 product.getPrice()
         );
     }

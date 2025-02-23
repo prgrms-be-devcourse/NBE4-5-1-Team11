@@ -41,11 +41,18 @@ public class ProductService {
 
     public List<ProductResponse> getAll() {
         return productRepository.findAll().stream()
-                .map(ProductResponse::from)
+                .map(product -> {
+                    try {
+                        Path imagePath = Paths.get(FILE_PATH).toAbsolutePath().resolve(product.getImage());
+                        byte[] imageBytes = Files.readAllBytes(imagePath);
+                        return ProductResponse.of(product, imageBytes);
+                    } catch (IOException e) {
+                        throw new IllegalArgumentException("이미지 파일을 읽는 데 실패했습니다.");
+                    }
+                })
                 .toList();
     }
 
-    @Transactional
     public void delete(Long id) {
         productRepository.deleteById(id);
     }
