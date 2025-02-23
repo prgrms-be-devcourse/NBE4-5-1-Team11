@@ -2,6 +2,7 @@ package com.example.coffee.product.service;
 
 import com.example.coffee.product.controller.dto.CreateProductRequest;
 import com.example.coffee.product.controller.dto.ProductResponse;
+import com.example.coffee.product.domain.Product;
 import com.example.coffee.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,18 @@ public class ProductService {
                 .toList();
     }
 
+    @Transactional
     public void delete(Long id) {
-        productRepository.deleteById(id);
+        Product product = productRepository.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
+
+        try {
+            Path imagePath = Paths.get(FILE_PATH).toAbsolutePath().resolve(product.getImage());
+            Files.deleteIfExists(imagePath);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("이미지 파일을 삭제하는 데 실패했습니다.");
+        }
+
+        productRepository.delete(product);
     }
 }
