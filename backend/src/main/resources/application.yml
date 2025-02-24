@@ -22,3 +22,10 @@ jwt:
   secret-key: ${SECRET-KEY}
   access-token-exp: ${ACCESS-EXP}
   refresh-token-exp: ${REFRESH-EXP}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
