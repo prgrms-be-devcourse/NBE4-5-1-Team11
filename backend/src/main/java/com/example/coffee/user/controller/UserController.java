@@ -49,7 +49,6 @@ public class UserController {
     }
 
     @Operation(summary = "회원 목록 조회")
-    @GetMapping
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<CreateUserResponse> getAllUsers(){

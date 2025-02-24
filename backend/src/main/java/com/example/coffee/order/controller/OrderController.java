@@ -29,7 +29,7 @@ public class OrderController {
     }
 
     // 유저가 자신의 주문 목록 조회
-    @Opration(summary = "유저별 주문 목록 조회")
+    @Operation(summary = "유저별 주문 목록 조회")
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> findAllByUser() {
