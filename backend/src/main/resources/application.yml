@@ -17,3 +17,10 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
