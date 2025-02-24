@@ -38,7 +38,8 @@ public class OrderService {
                 .orElseGet(() -> userRepository.save(new User(orderRequest.email())));
 
         // 주문 조회 혹은 생성 후 저장
-        Order order = findByUserOrCreate(user, orderRequest);
+        LocalDateTime now = LocalDateTime.now();
+        Order order = findByUserOrCreate(user, orderRequest, now);
 
         // 주문 상품 업데이트 혹은 생성 후 저장
         updateOrderProduct(orderRequest, order);
@@ -90,17 +91,16 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
-    private Order findByUserOrCreate(User user, CreateOrderRequest orderRequest) {
+    private Order findByUserOrCreate(User user, CreateOrderRequest orderRequest, LocalDateTime now) {
         List<Order> orderList = orderRepository.findAllByUser(user, Sort.by(Sort.Order.desc("createdAt")));
 
         // 첫 주문이면 생성
-        if (orderList.isEmpty()) return createOrder(user, orderRequest);
+        if (orderList.isEmpty()) return createOrder(user, orderRequest, now);
 
 
         // 마지막 주문이 14시 전인데 orderRequest의 주문 시간은 14시 후라면 생성
-        LocalDateTime currentTime = LocalDateTime.now();
-        if (orderList.get(0).getCreatedAt().isBefore(DELIVERY_TIME) && currentTime.isAfter(DELIVERY_TIME)) {
-            return createOrder(user, orderRequest);
+        if (orderList.get(0).getCreatedAt().isBefore(DELIVERY_TIME) && now.isAfter(DELIVERY_TIME)) {
+            return createOrder(user, orderRequest, now);
         }
 
         // 마지막 주문이 14시 전이고 orderRequest의 주문 시간도 14시 전이면 추가
@@ -108,8 +108,8 @@ public class OrderService {
         return orderList.get(0);
     }
 
-    private Order createOrder(User user, CreateOrderRequest orderRequest) {
-        return orderRepository.save(orderRequest.toEntity(user));
+    private Order createOrder(User user, CreateOrderRequest orderRequest, LocalDateTime now) {
+        return orderRepository.save(orderRequest.toEntity(user, now));
     }
 
     private void updateOrderProduct(CreateOrderRequest orderRequest, Order order) {

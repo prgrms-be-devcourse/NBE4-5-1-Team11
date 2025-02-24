@@ -15,13 +15,13 @@ public record CreateOrderRequest(
         List<ProductRequest> products
 ) {
 
-    public Order toEntity(User user) {
+    public Order toEntity(User user, LocalDateTime now) {
         return Order.builder()
                 .user(user)
                 .address(address)
                 .code(code)
                 .totalPrice(totalPrice)
-                .createdAt(LocalDateTime.now())
+                .createdAt(now)
                 .status(Status.PENDING)
                 .build();
     }
