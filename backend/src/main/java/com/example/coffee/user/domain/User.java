@@ -27,10 +27,7 @@ public class User {
     private Authority authority;
 
     @Column(length = 500)
-    private String refreshToken;
-
-    @Column(length = 500)
-    private String accessToken;
+    private String refreshToken;  // ✅ 리프레시 토큰 저장
 
     public User(String email, String password, Authority authority) {
         this.email = email;
@@ -40,10 +37,6 @@ public class User {
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
-    }
-
-    public void updateAccessToken(String accessToken) {
-        this.accessToken = accessToken;
     }
 
 //

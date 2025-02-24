@@ -13,7 +13,7 @@ public record CreateUserRequest(
         return User.builder()
                 .email(email)
                 .password(encodedPassword) // encodedPassword!!
-                .authority(Authority.ROLE_ADMIN) // 기본은 일반사용자
+                .authority(Authority.ROLE_USER) // 기본은 일반사용자
                 .build();
     }
 }

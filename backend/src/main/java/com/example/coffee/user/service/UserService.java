@@ -35,7 +35,6 @@ public class UserService {
     public LoginResponse login(LoginRequest request){
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         if(!passwordEncoder.matches(request.password(), user.getPassword())){
             throw new RuntimeException("Wrong password");
         }
@@ -45,7 +44,6 @@ public class UserService {
         String refreshToken = JwtUtil.Jwt.createRefreshToken(secretKey, 7, claims);
 
         user.updateRefreshToken(refreshToken);
-        user.updateAccessToken(accessToken);
         userRepository.save(user);
 
         return new LoginResponse(accessToken, refreshToken);
@@ -70,9 +68,6 @@ public class UserService {
                 "authority", user.getAuthority().name()
         );
         String newAccessToken = JwtUtil.Jwt.createToken(secretKey, 3600, claims);
-
-        user.updateAccessToken(newAccessToken);
-        userRepository.save(user);
 
         return new LoginResponse(newAccessToken, refreshToken);
     }
