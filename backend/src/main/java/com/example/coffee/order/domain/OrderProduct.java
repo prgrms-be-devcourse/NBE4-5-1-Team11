@@ -25,8 +25,9 @@ public class OrderProduct {
     private Product product;
 
     @Column
-    private Integer price; // 상품 가격
-
-    @Column
     private Integer quantity; // 주문 수량
+
+    public void addQuantity(int quantity) {
+        this.quantity += quantity;
+    }
 }

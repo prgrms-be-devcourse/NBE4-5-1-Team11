@@ -1,8 +1,10 @@
 package com.example.coffee.user.controller;
 
-import com.example.coffee.order.controller.dto.OrderResponse;
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
+import com.example.coffee.user.controller.dto.LoginRequest;
+import com.example.coffee.user.controller.dto.TokenResponse;
+import com.example.coffee.user.controller.dto.RefreshTokenRequest;
 import com.example.coffee.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,12 +23,24 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "회원 가입")
-    @PostMapping
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
+    public CreateUserResponse register(@RequestBody CreateUserRequest request) {
         return userService.saveUser(request);
     }
-    
+
+    @Operation(summary = "로그인")
+    @PostMapping("/login")
+    public TokenResponse login(@RequestBody LoginRequest request) {
+        return userService.login(request);
+    }
+
+    @Operation(summary = "토큰 재발행 (로그인 유지)")
+    @PostMapping("/refresh")
+    public TokenResponse refreshAccessToken(@RequestBody RefreshTokenRequest request) {
+        return userService.refreshAccessToken(request.refreshToken());
+    }
+
     @Operation(summary = "회원 단건 조회")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -35,30 +49,16 @@ public class UserController {
     }
 
     @Operation(summary = "회원 목록 조회")
-    @GetMapping
+    @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<CreateUserResponse> getAllUsers(){
         return userService.getAllUsers();
     }
-
-//    @PutMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public CreateUserResponse updateUser(@PathVariable Long id, @RequestBody CreateUserRequest request){
-//        return userService.updateUser(id, request);
-//    }
 
     @Operation(summary = "회원 삭제")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
-    }
-
-   // 해당 유저의 주문 정보 모두 조회
-   @Operation(summary = "특정 회원 주문 목록 조회")
-    @GetMapping("/{id}/orders")
-    @ResponseStatus(HttpStatus.OK)
-    public List<OrderResponse> getUserOrders(@PathVariable Long id){
-        return userService.getUserOrders(id);
     }
 }

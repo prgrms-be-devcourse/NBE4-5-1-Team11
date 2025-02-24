@@ -18,6 +18,11 @@ spring:
     hibernate:
       ddl-auto: update
 
+jwt:
+  secret-key: ${SECRET-KEY}
+  access-token-exp: ${ACCESS-EXP}
+  refresh-token-exp: ${REFRESH-EXP}
+
 springdoc:
   api-docs:
     enabled: true

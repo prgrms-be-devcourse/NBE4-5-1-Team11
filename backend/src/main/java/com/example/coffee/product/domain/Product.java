@@ -16,15 +16,5 @@ public class Product {
     @Column(length = 64)
     private String name; // 상품 이름
 
-    @Column
     private int price; // 상품 가격
-
-    @Column
-    private String image; // 상품 이미지
-
-    public Product(String name, int price, String image) {
-        this.name = name;
-        this.price = price;
-        this.image = image;
-    }
 }
