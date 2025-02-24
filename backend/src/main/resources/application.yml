@@ -17,3 +17,10 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+
+springdoc:
+  api-docs:
+    enabled: true  # Swagger API 문서 활성화
+  swagger-ui:
+    path: /swagger-ui.html  # Swagger UI 접속 경로
+    operationsSorter: method  # 메서드 순서대로 정렬
