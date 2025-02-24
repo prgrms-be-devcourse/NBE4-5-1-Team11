@@ -46,6 +46,14 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateAuthority(Authority authority) {
+        this.authority = authority;
+    }
+
 //
 //    public void update(CreateUserRequest request) {
 //        name = request.name();

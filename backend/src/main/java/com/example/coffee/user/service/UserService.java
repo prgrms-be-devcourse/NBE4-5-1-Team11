@@ -1,20 +1,14 @@
 package com.example.coffee.user.service;
 
-import com.example.coffee.order.controller.dto.OrderProductResponse;
-import com.example.coffee.order.controller.dto.OrderResponse;
-import com.example.coffee.order.domain.Order;
-import com.example.coffee.order.domain.OrderProduct;
-import com.example.coffee.order.domain.repository.OrderProductRepository;
-import com.example.coffee.order.domain.repository.OrderRepository;
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
 import com.example.coffee.user.controller.dto.LoginRequest;
 import com.example.coffee.user.controller.dto.TokenResponse;
+import com.example.coffee.user.domain.Authority;
 import com.example.coffee.user.domain.Token;
 import com.example.coffee.user.domain.User;
 import com.example.coffee.user.domain.repository.UserRepository;
 import com.example.coffee.utils.JwtUtil;
-import com.example.coffee.user.domain.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,13 +23,23 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder; // 비밀번호 인코딩 해야 함
     private final JwtUtil jwtUtil;
-    private final OrderRepository orderRepository;
-    private final OrderProductRepository orderProductRepository;
 
     @Transactional
     public CreateUserResponse saveUser(CreateUserRequest userDto){
         String encodedPassword = passwordEncoder.encode(userDto.password()); // 비밀번호 인코딩
-        return CreateUserResponse.from(userRepository.save(userDto.toEntity(encodedPassword))); // 넣어서 dto 반환
+
+        User user = userRepository.findByEmail(userDto.email())
+                .map(existingUser -> {
+                    if (!existingUser.getAuthority().equals(Authority.ROLE_REGISTERED)) {
+                        throw new IllegalStateException("이미 회원가입한 회원입니다.");
+                    }
+                    existingUser.updateAuthority(Authority.ROLE_USER);
+                    existingUser.updatePassword(encodedPassword);
+                    return existingUser;
+                })
+                .orElseGet(() -> userRepository.save(userDto.toEntity(encodedPassword)));
+
+        return CreateUserResponse.from(user);
     }
 
     @Transactional
