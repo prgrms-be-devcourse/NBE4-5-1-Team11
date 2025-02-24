@@ -17,14 +17,14 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // 주문 결제 동시에 유저 저장, 주문 저장
+    // ✅ 주문 결제 동시에 유저 저장, 주문 저장
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponse create(@RequestBody CreateOrderRequest orderRequest) {
-        return orderService.create(orderRequest);
+    public void create(@RequestBody CreateOrderRequest orderRequest) {
+        orderService.create(orderRequest);
     }
 
-    // 주문 전체 조회
+    // ✅ 주문 전체 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> findAll() {
@@ -32,7 +32,7 @@ public class OrderController {
     }
 
     // 유저가 자신의 주문 목록 조회
-    @GetMapping("/id")
+    @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> findAllByUser() {
         return orderService.findAllByUser(SecurityUtil.getCurrentUserWithLogin());
@@ -45,14 +45,14 @@ public class OrderController {
         return orderService.findAllByEmail(email);
     }*/
 
-    // 주문 id로 주문 단건 조회
+    // ✅ 주문 id로 주문 단건 조회
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrderResponse findById(@PathVariable Long id) {
         return orderService.findById(id);
     }
 
-    // 주문 id로 주문 단건 삭제
+    // ✅ 주문 id로 주문 단건 삭제
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

@@ -1,6 +1,7 @@
 package com.example.coffee.order.controller.dto;
 
 import com.example.coffee.order.domain.Order;
+import com.example.coffee.order.domain.Status;
 import lombok.Builder;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public record OrderResponse(
         String address,
         String code,
         Integer totalPrice,
+        Status status,
         List<OrderProductResponse> products
 ) {
 
@@ -22,6 +24,7 @@ public record OrderResponse(
                 order.getAddress(),
                 order.getCode(),
                 order.getTotalPrice(),
+                order.getStatus(),
                 productResponses
         );
     }

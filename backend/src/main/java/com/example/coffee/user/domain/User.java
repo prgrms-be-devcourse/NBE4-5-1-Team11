@@ -1,8 +1,9 @@
 package com.example.coffee.user.domain;
 
-import com.example.coffee.user.controller.dto.CreateUserRequest;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.UUID;
 
 @Entity // db 테이블과 매핑
 @Getter
@@ -23,7 +24,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private Authority authority;
 
     @Column(length = 500)
@@ -37,6 +38,8 @@ public class User {
 
     public User(String email) {
         this.email = email;
+        this.password = email + UUID.randomUUID();
+        this.authority = Authority.ROLE_REGISTERED;
     }
 
     public void updateRefreshToken(String refreshToken) {

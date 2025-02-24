@@ -26,7 +26,7 @@ public class TestDataInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (orderRepository.count() > 0) {
+        /*if (orderRepository.count() > 0) {
             System.out.println("✅ 이미 초기 데이터가 존재하므로 추가하지 않습니다.");
             return;
         }
@@ -97,6 +97,6 @@ public class TestDataInit implements CommandLineRunner {
                         .build()
         ));
 
-        System.out.println("✅ 초기 데이터 삽입 완료!");
+        System.out.println("✅ 초기 데이터 삽입 완료!");*/
     }
 }

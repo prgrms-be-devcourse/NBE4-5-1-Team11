@@ -11,7 +11,6 @@ public record ProductRequest(
     // 맞는지 봐야됨
     public OrderProduct toEntity(Order order, Product product) {
         return OrderProduct.builder()
-                .price(product.getPrice())
                 .quantity(quantity)
                 .order(order)
                 .product(product)

@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
     void deleteByOrderId(Long orderId);
-    List<OrderProduct> findByOrder(Order order);
+    List<OrderProduct> findAllByOrder(Order order);
     OrderProduct findByOrderAndProduct(Order order, Product product);
 }

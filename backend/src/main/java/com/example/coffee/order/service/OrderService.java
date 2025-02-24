@@ -32,7 +32,7 @@ public class OrderService {
 
     // 주문 결제 동시에 유저 저장, 주문 저장
     @Transactional
-    public OrderResponse create(CreateOrderRequest orderRequest) {
+    public void create(CreateOrderRequest orderRequest) {
         // 유저 조회 혹은 생성 후 저장
         User user = userRepository.findByEmail(orderRequest.email())
                 .orElseGet(() -> userRepository.save(new User(orderRequest.email())));
@@ -41,16 +41,15 @@ public class OrderService {
         Order order = findByUserOrCreate(user, orderRequest);
 
         // 주문 상품 업데이트 혹은 생성 후 저장
-        List<OrderProductResponse> productResponses = updateOrderProduct(orderRequest, order);
-
-        return OrderResponse.from(order, productResponses);
+        updateOrderProduct(orderRequest, order);
     }
 
     // 주문 전체 조회
     public List<OrderResponse> findAll() {
         return orderRepository.findAll().stream()
                 .map(order -> {
-                    List<OrderProductResponse> productResponses = orderProductRepository.findByOrder(order).stream()
+                    System.out.println(orderProductRepository.findAllByOrder(order));
+                    List<OrderProductResponse> productResponses = orderProductRepository.findAllByOrder(order).stream()
                             .map(OrderProductResponse::from)
                             .toList();
                     return OrderResponse.from(order, productResponses);
@@ -60,9 +59,10 @@ public class OrderService {
 
     // 유저별 주문 전체 조회
     public List<OrderResponse> findAllByUser(User user) {
+        System.out.println("여기까지 못 옴?");
         return orderRepository.findAllByUser(user, Sort.by(Sort.Order.desc("createdAt"))).stream()
                 .map(order -> {
-                    List<OrderProductResponse> productResponses = orderProductRepository.findByOrder(order).stream()
+                    List<OrderProductResponse> productResponses = orderProductRepository.findAllByOrder(order).stream()
                             .map(OrderProductResponse::from)
                             .toList();
                     return OrderResponse.from(order, productResponses);
@@ -76,7 +76,7 @@ public class OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
 
-        List<OrderProductResponse> productResponses = orderProductRepository.findByOrder(order).stream()
+        List<OrderProductResponse> productResponses = orderProductRepository.findAllByOrder(order).stream()
                 .map(OrderProductResponse::from)
                 .toList();
 
@@ -112,9 +112,9 @@ public class OrderService {
         return orderRepository.save(orderRequest.toEntity(user));
     }
 
-    private List<OrderProductResponse> updateOrderProduct(CreateOrderRequest orderRequest, Order order) {
-        return orderRequest.products().stream()
-                .map(productRequest -> {
+    private void updateOrderProduct(CreateOrderRequest orderRequest, Order order) {
+        orderRequest.products().forEach(
+                productRequest -> {
                     Product product = productRepository.findById(productRequest.id())
                             .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productRequest.id()));
 
@@ -122,12 +122,12 @@ public class OrderService {
 
                     if (orderProduct == null) {
                         orderProduct = productRequest.toEntity(order, product);
+                    } else {
+                        orderProduct.addQuantity(productRequest.quantity());
                     }
-                    orderProduct.addQuantity(productRequest.quantity());
 
-                    return OrderProductResponse.from(orderProduct);
-                })
-                .toList();
+                    orderProductRepository.save(orderProduct);
+                });
     }
 
 //    // 주문 전체 삭제
