@@ -3,6 +3,8 @@ package com.example.coffee.utils;
 import static io.jsonwebtoken.security.Keys.*;
 import static java.nio.charset.StandardCharsets.*;
 
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
@@ -18,7 +20,8 @@ public record JwtCredentials (
     @ConstructorBinding
     public JwtCredentials(String secretKey, long accessTokenExp, long refreshTokenExp) {
         this(
-                hmacShaKeyFor(secretKey.getBytes(UTF_8)),
+                Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey)),
+                //hmacShaKeyFor(secretKey.getBytes(UTF_8)),
                 accessTokenExp,
                 refreshTokenExp
         );

@@ -29,4 +29,8 @@ public class OrderProduct {
 
     @Column
     private Integer quantity; // 주문 수량
+
+    public void addQuantity(int quantity) {
+        this.quantity += quantity;
+    }
 }

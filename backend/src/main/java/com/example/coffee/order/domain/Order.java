@@ -34,4 +34,7 @@ public class Order {
     @Column
     private  String code; // 우편 번호
 
+    @Column
+    private Status status;
+
 }

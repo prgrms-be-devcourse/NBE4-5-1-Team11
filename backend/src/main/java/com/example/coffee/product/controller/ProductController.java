@@ -15,6 +15,7 @@ public class ProductController {
 
     private final ProductService productService;
 
+    // ✅ 상품 전체 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProduct() {

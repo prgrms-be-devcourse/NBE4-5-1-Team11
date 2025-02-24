@@ -21,17 +21,20 @@ public class UserController {
 
     private final UserService userService;
 
+    // ✅ 회원가입
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse register(@RequestBody CreateUserRequest request) {
         return userService.saveUser(request);
     }
 
+    // ✅ 로그인
     @PostMapping("/login")
     public TokenResponse login(@RequestBody LoginRequest request) {
         return userService.login(request);
     }
 
+    // ✅ 토큰 재발행 (로그인 유지)
     @PostMapping("/refresh")
     public TokenResponse refreshAccessToken(@RequestBody RefreshTokenRequest request) {
         return userService.refreshAccessToken(request.refreshToken());
@@ -43,12 +46,14 @@ public class UserController {
 //        return userService.saveUser(request);
 //    }
 
+    // ✅ id로 유저 조회
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CreateUserResponse getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
+    // ✅ 유저 전체 조회
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<CreateUserResponse> getAllUsers(){
@@ -61,16 +66,18 @@ public class UserController {
 //        return userService.updateUser(id, request);
 //    }
 
+    // ✅ 유저 삭제
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
     }
 
-   // 해당 유저의 주문 정보 모두 조회
-    @GetMapping("/{id}/orders")
+    // ✅ 해당 유저의 주문 정보 모두 조회
+    // order api와 겹침
+    /*@GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> getUserOrders(@PathVariable Long id){
         return userService.getUserOrders(id);
-    }
+    }*/
 }

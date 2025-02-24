@@ -5,7 +5,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
-public class securityUtil {
+public class SecurityUtil {
+    // 로그인된 상황에서 현재 유저
     public static User getCurrentUserWithLogin() {
         try {
             return getUser();
@@ -14,16 +15,17 @@ public class securityUtil {
         }
     }
 
-    public static User getCurrentUserOrNotLogin() {
+    // 로그인 여부를 모르는 상황에서 현재 유저 찾기 -> Optional User
+    public static Optional<User> getOptUser() {
+        return Optional.ofNullable(getCurrentUserOrNotLogin());
+    }
+
+    private static User getCurrentUserOrNotLogin() {
         try {
             return getUser();
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public static Optional<User> getOptUser() {
-        return Optional.ofNullable(getCurrentUserOrNotLogin());
     }
 
     private static User getUser() {

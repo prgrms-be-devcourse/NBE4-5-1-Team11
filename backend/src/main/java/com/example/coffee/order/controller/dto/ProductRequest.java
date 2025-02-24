@@ -6,10 +6,9 @@ import com.example.coffee.product.domain.Product;
 
 public record ProductRequest(
         Long id,
-        String name,
-        Integer price,
         Integer quantity
 ) {
+    // 맞는지 봐야됨
     public OrderProduct toEntity(Order order, Product product) {
         return OrderProduct.builder()
                 .price(product.getPrice())

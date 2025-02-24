@@ -1,6 +1,7 @@
 package com.example.coffee.order.controller.dto;
 
 import com.example.coffee.order.domain.Order;
+import com.example.coffee.order.domain.Status;
 import com.example.coffee.user.domain.User;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,6 @@ public record CreateOrderRequest(
         String email,
         String address,
         String code,
-        LocalDateTime createdAt,
         Integer totalPrice,
         List<ProductRequest> products
 ) {
@@ -22,6 +22,7 @@ public record CreateOrderRequest(
                 .code(code)
                 .totalPrice(totalPrice)
                 .createdAt(LocalDateTime.now())
+                .status(Status.PENDING)
                 .build();
     }
 }

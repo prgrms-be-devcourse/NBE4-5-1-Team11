@@ -32,10 +32,10 @@ public class TestDataInit implements CommandLineRunner {
         }
 
         // 제품 데이터 삽입
-        Product americano = productRepository.save(new Product( "Americano", 5000, null));
-        Product latte = productRepository.save(new Product("Latte", 5500, null));
-        Product cappuccino = productRepository.save(new Product("Cappuccino", 6000, null));
-        Product greenTea = productRepository.save(new Product("GreenTea", 4500, null));
+        Product americano = productRepository.save(new Product(1L, "Americano", 5000));
+        Product latte = productRepository.save(new Product(2L, "Latte", 5500));
+        Product cappuccino = productRepository.save(new Product(3L, "Cappuccino", 6000));
+        Product greenTea = productRepository.save(new Product(4L, "GreenTea", 4500));
 
         // 유저 데이터 삽입
         User user1 = userRepository.save(new User("han000@naver.com"));

@@ -35,6 +35,10 @@ public class User {
         this.authority = authority;
     }
 
+    public User(String email) {
+        this.email = email;
+    }
+
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }

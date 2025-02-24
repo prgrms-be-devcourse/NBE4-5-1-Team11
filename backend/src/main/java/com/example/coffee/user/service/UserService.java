@@ -10,6 +10,7 @@ import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
 import com.example.coffee.user.controller.dto.LoginRequest;
 import com.example.coffee.user.controller.dto.TokenResponse;
+import com.example.coffee.user.domain.Token;
 import com.example.coffee.user.domain.User;
 import com.example.coffee.user.domain.repository.UserRepository;
 import com.example.coffee.utils.JwtUtil;
@@ -41,20 +42,25 @@ public class UserService {
     public TokenResponse login(LoginRequest request){
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         if(!passwordEncoder.matches(request.password(), user.getPassword())){
             throw new RuntimeException("Wrong password");
         }
 
+        Token token = jwtUtil.createToken(user);
+        user.updateRefreshToken(token.refreshToken());
 
-        return TokenResponse.from(jwtUtil.createToken(user));
+        return TokenResponse.from(token);
      }
 
     @Transactional
     public TokenResponse refreshAccessToken(String refreshToken) {
+        // refresh token 유효성 검사
         if (!jwtUtil.isValidToken(refreshToken)) {
             throw new RuntimeException("Invalid refresh token");
         }
 
+        // user 찾기
         Long userId = jwtUtil.extractId(refreshToken);
         if (userId == null) {
             throw new IllegalArgumentException("Invalid refresh token: userId is null");
@@ -62,13 +68,16 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-//        if (!user.getRefreshToken().equals(refreshToken)) {
-//            throw new RuntimeException("Refresh token mismatch");
-//        }
+        // user의 refresh token과 동일한지 확인
+        if (!user.getRefreshToken().equals(refreshToken)) {
+            throw new RuntimeException("Refresh token mismatch");
+        }
 
-        String newAccessToken = jwtUtil.createAccessToken(user);
+        // 토큰 재발행 및 user의 refresh token 업데이트
+        Token token = jwtUtil.createToken(user);
+        user.updateRefreshToken(token.refreshToken());
 
-        return new TokenResponse(newAccessToken, refreshToken);
+        return TokenResponse.from(token);
     }
 
 
@@ -93,13 +102,13 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<OrderResponse> getUserOrders(Long userId) {
+    /*public List<OrderResponse> getUserOrders(Long userId) {
         // 유저 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // 해당 유저의 주문 목록 조회
-        List<Order> orders = orderRepository.findByUser(user);
+        List<Order> orders = orderRepository.findAllByUser(user);
 
         // 주문 목록을 OrderResponse로 변환
         return orders.stream()
@@ -111,5 +120,5 @@ public class UserService {
                     return OrderResponse.from(order, productResponses);
                 })
                 .toList();
-    }
+    }*/
 }

@@ -34,7 +34,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .claim("id", user.getId())
                 .expiration(expiration)
-                .signWith(jwtCredentials.secretKey(), SignatureAlgorithm.HS256)
+                .signWith(jwtCredentials.secretKey())
                 .compact();
     }
 
