@@ -10,6 +10,7 @@ public record CreateOrderRequest(
         String email,
         String address,
         String code,
+        LocalDateTime createdAt,
         Integer totalPrice,
         List<ProductRequest> products
 ) {

@@ -1,7 +1,10 @@
 package com.example.coffee.user.service;
 
+import com.example.coffee.order.controller.dto.OrderProductResponse;
 import com.example.coffee.order.controller.dto.OrderResponse;
 import com.example.coffee.order.domain.Order;
+import com.example.coffee.order.domain.OrderProduct;
+import com.example.coffee.order.domain.repository.OrderProductRepository;
 import com.example.coffee.order.domain.repository.OrderRepository;
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
@@ -19,6 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private final OrderProductRepository orderProductRepository;
 
     @Transactional
     public CreateUserResponse saveUser(CreateUserRequest userDto){
@@ -57,15 +61,22 @@ public class UserService {
     }
 
     public List<OrderResponse> getUserOrders(Long userId) {
-        // 사용자 존재 여부 확인
+        // 유저 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 해당 사용자의 주문 목록 조회
+        // 해당 유저의 주문 목록 조회
         List<Order> orders = orderRepository.findByUser(user);
 
+        // 주문 목록을 OrderResponse로 변환
         return orders.stream()
-                .map(OrderResponse::from)  // Order -> OrderResponse 변환
+                .map(order -> {
+                    List<OrderProduct> orderProducts = orderProductRepository.findByOrder(order); // 주문한 제품 조회
+                    List<OrderProductResponse> productResponses = orderProducts.stream()
+                            .map(OrderProductResponse::from)
+                            .toList();
+                    return OrderResponse.from(order, productResponses);
+                })
                 .toList();
     }
 }

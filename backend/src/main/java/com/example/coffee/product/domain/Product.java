@@ -19,4 +19,10 @@ public class Product {
     private String image; // 상품 이미지 URL
 
     private int price; // 상품 가격
+
+    public Product(String name, int price, String image) {
+        this.name = name;
+        this.price = price;
+        this.image = image;
+    }
 }

@@ -1,13 +1,12 @@
 package com.example.coffee.order.controller.dto;
 
-import com.example.coffee.order.domain.Order;
 import com.example.coffee.order.domain.OrderProduct;
-import com.example.coffee.product.domain.Product;
+import com.example.coffee.product.controller.dto.ProductResponse;
 
 public record OrderProductResponse(
         Long id,
-        Order order,
-        Product product,
+        Long orderId,
+        ProductResponse product,
         Integer price,
         Integer quantity
 ) {
@@ -15,8 +14,8 @@ public record OrderProductResponse(
     public static OrderProductResponse from(OrderProduct orderProduct) {
         return new OrderProductResponse(
                 orderProduct.getId(),
-                orderProduct.getOrder(),
-                orderProduct.getProduct(),
+                orderProduct.getOrder().getId(),
+                ProductResponse.from(orderProduct.getProduct()),
                 orderProduct.getPrice(),
                 orderProduct.getQuantity()
         );

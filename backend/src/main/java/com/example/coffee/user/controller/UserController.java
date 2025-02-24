@@ -47,7 +47,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-   // 유저의 주문 정보 모두 조회
+   // 해당 유저의 주문 정보 모두 조회
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> getUserOrders(@PathVariable Long id){
