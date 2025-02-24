@@ -30,6 +30,13 @@ public class OrderController {
         return orderService.findAll();
     }
 
+    // 주문 단건 조회
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderResponse findById(@PathVariable Long id) {
+        return orderService.findById(id);
+    }
+
     // 주문 단건 삭제
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

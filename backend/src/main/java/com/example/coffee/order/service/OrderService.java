@@ -46,6 +46,13 @@ public class OrderService {
                 .toList();
     }
 
+    // 주문 단건 조회
+    public OrderResponse findById(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
+        return OrderResponse.from(order);
+    }
+
     // 주문 단건 삭제
     @Transactional
     public void delete(Long orderId) {
