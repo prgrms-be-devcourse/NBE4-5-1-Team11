@@ -3,14 +3,15 @@ package com.example.coffee.user.controller;
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
 import com.example.coffee.user.controller.dto.LoginRequest;
-import com.example.coffee.user.controller.dto.LoginResponse;
+import com.example.coffee.user.controller.dto.TokenResponse;
+import com.example.coffee.user.controller.dto.RefreshTokenRequest;
 import com.example.coffee.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -26,16 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    public TokenResponse login(@RequestBody LoginRequest request) {
         return userService.login(request);
     }
 
     @PostMapping("/refresh")
-    @ResponseStatus(HttpStatus.OK)
-    public LoginResponse refreshAccessToken(@RequestBody Map<String, String> request) {
-        String refreshToken = request.get("refreshToken");
-        return userService.refreshAccessToken(refreshToken);
+    public TokenResponse refreshAccessToken(@RequestBody RefreshTokenRequest request) {
+        return userService.refreshAccessToken(request.refreshToken());
     }
 
 //    @PostMapping
@@ -50,7 +48,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping
+    @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<CreateUserResponse> getAllUsers(){
         return userService.getAllUsers();

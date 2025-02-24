@@ -3,19 +3,16 @@ package com.example.coffee.user.service;
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
 import com.example.coffee.user.controller.dto.LoginRequest;
-import com.example.coffee.user.controller.dto.LoginResponse;
-import com.example.coffee.user.domain.repository.UserRepository;
+import com.example.coffee.user.controller.dto.TokenResponse;
 import com.example.coffee.user.domain.User;
+import com.example.coffee.user.domain.repository.UserRepository;
 import com.example.coffee.utils.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder; // 비밀번호 인코딩 해야 함
-    private final String secretKey = "your-base64-encoded-secret-key-here";
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public CreateUserResponse saveUser(CreateUserRequest userDto){
@@ -32,44 +29,37 @@ public class UserService {
     }
 
     @Transactional
-    public LoginResponse login(LoginRequest request){
+    public TokenResponse login(LoginRequest request){
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if(!passwordEncoder.matches(request.password(), user.getPassword())){
             throw new RuntimeException("Wrong password");
         }
 
-        Map<String, Object> claims = Map.of("email", user.getEmail(), "authority", user.getAuthority().name());
-        String accessToken = JwtUtil.Jwt.createToken(secretKey, 3600, claims);
-        String refreshToken = JwtUtil.Jwt.createRefreshToken(secretKey, 7, claims);
 
-        user.updateRefreshToken(refreshToken);
-        userRepository.save(user);
-
-        return new LoginResponse(accessToken, refreshToken);
+        return TokenResponse.from(jwtUtil.createToken(user));
      }
 
     @Transactional
-    public LoginResponse refreshAccessToken(String refreshToken) {
-        if (!JwtUtil.Jwt.isValidToken(secretKey, refreshToken)) {
+    public TokenResponse refreshAccessToken(String refreshToken) {
+        if (!jwtUtil.isValidToken(refreshToken)) {
             throw new RuntimeException("Invalid refresh token");
         }
 
-        String email = JwtUtil.Jwt.extractEmail(secretKey, refreshToken);
-        User user = userRepository.findByEmail(email)
+        Long userId = jwtUtil.extractId(refreshToken);
+        if (userId == null) {
+            throw new IllegalArgumentException("Invalid refresh token: userId is null");
+        }
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!user.getRefreshToken().equals(refreshToken)) {
-            throw new RuntimeException("Refresh token mismatch");
-        }
+//        if (!user.getRefreshToken().equals(refreshToken)) {
+//            throw new RuntimeException("Refresh token mismatch");
+//        }
 
-        Map<String, Object> claims = Map.of(
-                "email", user.getEmail(),
-                "authority", user.getAuthority().name()
-        );
-        String newAccessToken = JwtUtil.Jwt.createToken(secretKey, 3600, claims);
+        String newAccessToken = jwtUtil.createAccessToken(user);
 
-        return new LoginResponse(newAccessToken, refreshToken);
+        return new TokenResponse(newAccessToken, refreshToken);
     }
 
 

@@ -17,3 +17,8 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+
+jwt:
+  secret-key: ${SECRET-KEY}
+  access-token-exp: ${ACCESS-EXP}
+  refresh-token-exp: ${REFRESH-EXP}

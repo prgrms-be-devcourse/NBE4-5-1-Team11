@@ -1,7 +1,6 @@
 package com.example.coffee.user.controller.dto;
 
-public record LoginResponse(
-        String accessToken,
+public record RefreshTokenRequest(
         String refreshToken
 ) {
 }
