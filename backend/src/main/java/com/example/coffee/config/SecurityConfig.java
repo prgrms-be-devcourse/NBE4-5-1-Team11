@@ -1,9 +1,7 @@
 package com.example.coffee.config;
 
 import com.example.coffee.security.JwtAuthenticationFilter;
-import com.example.coffee.user.domain.Authority;
 import com.example.coffee.user.domain.repository.UserRepository;
-import com.example.coffee.utils.JwtCredentials;
 import com.example.coffee.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .requestMatchers("/users/register", "/users/login", "/users/refresh").permitAll() // 회원가입, 로그인, 토큰 갱신은 허용
-                        .requestMatchers(HttpMethod.POST, "/orders").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/orders").permitAll() // 주문은 전체 허용
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/list").hasRole("ADMIN") // 🔒 `/users/**` 엔드포인트는 인증 필요
                         .anyRequest().authenticated() // 다른 모든 요청도 인증 필요
                 )
