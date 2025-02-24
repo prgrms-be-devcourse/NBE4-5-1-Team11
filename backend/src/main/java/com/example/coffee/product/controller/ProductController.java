@@ -1,6 +1,5 @@
 package com.example.coffee.product.controller;
 
-import com.example.coffee.product.controller.dto.CreateProductRequest;
 import com.example.coffee.product.controller.dto.ProductResponse;
 import com.example.coffee.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -16,21 +15,9 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@RequestBody CreateProductRequest dto) {
-        productService.createProduct(dto);
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProduct() {
         return productService.getAll();
-    }
-
-    @DeleteMapping("/{productId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable(name = "productId") Long productId) {
-        productService.delete(productId);
     }
 }
