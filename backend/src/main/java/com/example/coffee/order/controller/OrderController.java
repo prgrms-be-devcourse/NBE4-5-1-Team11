@@ -20,7 +20,6 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // 주문 결제 동시에 유저 저장, 주문 저장
     @Operation(summary = "주문 생성")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -28,8 +27,7 @@ public class OrderController {
         orderService.create(orderRequest);
     }
 
-    // 유저가 자신의 주문 목록 조회
-    @Operation(summary = "유저별 주문 목록 조회")
+    @Operation(summary = "유저별 주문 목록 조회: 이것만 안됩니다 ㅜㅜ")
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> findAllByUser() {
