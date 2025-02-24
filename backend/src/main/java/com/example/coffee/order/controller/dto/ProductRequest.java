@@ -12,7 +12,7 @@ public record ProductRequest(
 ) {
     public OrderProduct toEntity(Order order, Product product) {
         return OrderProduct.builder()
-                .price(price)
+                .price(product.getPrice())
                 .quantity(quantity)
                 .order(order)
                 .product(product)

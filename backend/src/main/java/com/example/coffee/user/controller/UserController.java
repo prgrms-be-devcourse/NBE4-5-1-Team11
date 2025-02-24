@@ -1,5 +1,6 @@
 package com.example.coffee.user.controller;
 
+import com.example.coffee.order.controller.dto.OrderResponse;
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
 import com.example.coffee.user.service.UserService;
@@ -44,5 +45,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
+    }
+
+   // 해당 유저의 주문 정보 모두 조회
+    @GetMapping("/{id}/orders")
+    @ResponseStatus(HttpStatus.OK)
+    public List<OrderResponse> getUserOrders(@PathVariable Long id){
+        return userService.getUserOrders(id);
     }
 }
