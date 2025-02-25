@@ -37,4 +37,7 @@ public class Order {
     @Column
     private Status status;
 
+    public void updateState() {
+        this.status = Status.DELIVERED;
+    }
 }
