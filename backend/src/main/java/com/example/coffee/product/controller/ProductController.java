@@ -2,6 +2,7 @@ package com.example.coffee.product.controller;
 
 import com.example.coffee.product.controller.dto.CreateProductRequest;
 import com.example.coffee.product.controller.dto.ProductResponse;
+import com.example.coffee.product.controller.dto.UpdateProductRequest;
 import com.example.coffee.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +23,7 @@ public class ProductController {
     @Operation(summary = "상품 생성")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(CreateProductRequest createProductRequest) {
+    public void createProduct(@RequestBody CreateProductRequest createProductRequest) {
         productService.create(createProductRequest);
     }
 
@@ -31,5 +32,12 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProduct() {
         return productService.getAll();
+    }
+
+    @Operation(summary = "상품 수정")
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateProduct(@PathVariable Long id, @RequestBody UpdateProductRequest request) {
+        productService.update(id, request);
     }
 }
