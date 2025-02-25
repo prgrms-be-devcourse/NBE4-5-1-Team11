@@ -2,6 +2,7 @@ package com.example.coffee.config;
 
 import com.example.coffee.order.domain.Order;
 import com.example.coffee.order.domain.OrderProduct;
+import com.example.coffee.order.domain.Status;
 import com.example.coffee.order.domain.repository.OrderProductRepository;
 import com.example.coffee.order.domain.repository.OrderRepository;
 import com.example.coffee.product.domain.Product;
@@ -50,7 +51,8 @@ public class TestDataInit implements CommandLineRunner {
                         .address("울산시 중구")
                         .code("55555")
                         .totalPrice(16500)
-                        .createdAt(LocalDateTime.now())
+                        .createdAt(LocalDateTime.now().minusDays(1))
+                        .status(Status.valueOf("DELIVERED"))
                         .build()
         );
 
@@ -73,7 +75,8 @@ public class TestDataInit implements CommandLineRunner {
                         .address("서울시 강남구")
                         .code("12345")
                         .totalPrice(11000)
-                        .createdAt(LocalDateTime.now())
+                        .createdAt(LocalDateTime.now().minusDays(1))
+                        .status(Status.valueOf("DELIVERED"))
                         .build()
         );
 
@@ -97,6 +100,7 @@ public class TestDataInit implements CommandLineRunner {
                         .code("18110")
                         .totalPrice(27000)
                         .createdAt(LocalDateTime.now())
+                        .status(Status.valueOf("PENDING"))
                         .build()
         );
 
@@ -120,6 +124,7 @@ public class TestDataInit implements CommandLineRunner {
                         .code("202020")
                         .totalPrice(10000)
                         .createdAt(LocalDateTime.now())
+                        .status(Status.valueOf("PENDING"))
                         .build()
         );
 
