@@ -27,7 +27,7 @@ public class OrderController {
         orderService.create(orderRequest);
     }
 
-    @Operation(summary = "유저별 주문 목록 조회: 이것만 안됩니다 ㅜㅜ")
+    @Operation(summary = "유저별 주문 목록 조회")
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> findAllByUser() {

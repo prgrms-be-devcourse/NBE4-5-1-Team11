@@ -1,4 +1,4 @@
-package com.example.coffee;
+package com.example.coffee.config;
 
 
 import org.springframework.context.annotation.Configuration;
