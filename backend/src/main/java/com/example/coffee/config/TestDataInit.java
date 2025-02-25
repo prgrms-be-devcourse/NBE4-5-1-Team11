@@ -2,6 +2,7 @@ package com.example.coffee.config;
 
 import com.example.coffee.order.domain.Order;
 import com.example.coffee.order.domain.OrderProduct;
+import com.example.coffee.order.domain.Status;
 import com.example.coffee.order.domain.repository.OrderProductRepository;
 import com.example.coffee.order.domain.repository.OrderRepository;
 import com.example.coffee.product.domain.Product;
@@ -32,10 +33,10 @@ public class TestDataInit implements CommandLineRunner {
         }
 
         // 제품 데이터 삽입
-        Product americano = productRepository.save(Product.builder().name("Americano").price(5000).build());
-        Product latte = productRepository.save(Product.builder().name("Latte").price(5500).build());
-        Product cappuccino = productRepository.save(Product.builder().name("Cappuccino").price(6000).build());
-        Product greenTea = productRepository.save(Product.builder().name("GreenTea").price(4500).build());
+        Product americano = productRepository.save(Product.builder().name("Brazil Serra Do Caparaó").price(5000).image("https://i.imgur.com/O05RZ6Y.png").build());
+        Product latte = productRepository.save(Product.builder().name("Columbia Nariñó").price(5500).image("https://i.imgur.com/PxLJVR8.png").build());
+        Product cappuccino = productRepository.save(Product.builder().name("Columbia Quindío").image("https://i.imgur.com/NvPAcBm.png").price(5500).build());
+        Product greenTea = productRepository.save(Product.builder().name("Ethiopia Sidamo").image("https://i.imgur.com/BeAPnQR.png").price(6000).build());
 
         // 유저 데이터 삽입
         User user1 = userRepository.save(new User("han000@naver.com"));
@@ -43,13 +44,15 @@ public class TestDataInit implements CommandLineRunner {
         User user3 = userRepository.save(new User("aaaa1111@naver.com"));
         User user4 = userRepository.save(new User("bbbb222@gmail.com"));
 
+        // 주문 데이터 삽입
         Order order1 = orderRepository.save(
                 Order.builder()
                         .user(user2)
                         .address("울산시 중구")
                         .code("55555")
                         .totalPrice(16500)
-                        .createdAt(LocalDateTime.now())
+                        .createdAt(LocalDateTime.now().minusDays(1))
+                        .status(Status.valueOf("DELIVERED"))
                         .build()
         );
 
@@ -72,7 +75,8 @@ public class TestDataInit implements CommandLineRunner {
                         .address("서울시 강남구")
                         .code("12345")
                         .totalPrice(11000)
-                        .createdAt(LocalDateTime.now())
+                        .createdAt(LocalDateTime.now().minusDays(1))
+                        .status(Status.valueOf("DELIVERED"))
                         .build()
         );
 
@@ -96,6 +100,7 @@ public class TestDataInit implements CommandLineRunner {
                         .code("18110")
                         .totalPrice(27000)
                         .createdAt(LocalDateTime.now())
+                        .status(Status.valueOf("PENDING"))
                         .build()
         );
 
@@ -119,6 +124,7 @@ public class TestDataInit implements CommandLineRunner {
                         .code("202020")
                         .totalPrice(10000)
                         .createdAt(LocalDateTime.now())
+                        .status(Status.valueOf("PENDING"))
                         .build()
         );
 
