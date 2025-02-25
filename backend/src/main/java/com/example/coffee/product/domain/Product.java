@@ -19,4 +19,16 @@ public class Product {
     private int price; // 상품 가격
 
     private String image; // 상품 이미지
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updatePrice(int price) {
+        this.price = price;
+    }
+
+    public void updateImage(String image) {
+        this.image = image;
+    }
 }
