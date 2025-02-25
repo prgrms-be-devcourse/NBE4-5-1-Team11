@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Modal from './modal';
 import './style.css';
 
@@ -30,7 +31,7 @@ interface Order {
   createdAt: string;
 }
 
-// 주문 시간 변환
+// 주문 시간 변환 함수
 const formatDate = (dateString: string) => {
   if (!dateString) return '날짜 없음';
 
@@ -47,36 +48,66 @@ const formatDate = (dateString: string) => {
 };
 
 export default function AdminOrderPage() {
+  const router = useRouter();
   const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
   const [completedOrders, setCompletedOrders] = useState<Order[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchOrders() {
-      try {
-        const response = await fetch('http://localhost:8080/admin/orders');
-        if (!response.ok) {
-          throw new Error(`Failed to fetch orders: ${response.status} ${response.statusText}`);
-        }
+    fetchOrders();
+  }, [router]);
 
-        const orders: Order[] = await response.json();
+  const fetchOrders = async () => {
+    const token = localStorage.getItem("accessToken");
 
-        // 배송 상태 분류
-        const pending = orders.filter(order => order.status === 'PENDING');
-        const completed = orders.filter(order => order.status === 'DELIVERED');
-
-        setPendingOrders(pending);
-        setCompletedOrders(completed);
-      } catch (error: any) {
-        console.error('Error fetching orders:', error);
-        setError(error.message);
-      }
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      router.push("/auth");
+      return;
     }
 
-    fetchOrders();
-  }, []);
+    try {
+      const response = await fetch("http://localhost:8080/admin/orders", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+        localStorage.removeItem("accessToken");
+        router.push("/auth");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error("주문 정보를 불러올 수 없습니다.");
+      }
+
+      const orders: Order[] = await response.json();
+
+      if (!Array.isArray(orders)) {
+        throw new Error("올바른 주문 데이터 형식이 아닙니다.");
+      }
+
+      // 배송 상태 분류
+      const pending = orders.filter(order => order.status === 'PENDING');
+      const completed = orders.filter(order => order.status === 'DELIVERED');
+
+      setPendingOrders(pending);
+      setCompletedOrders(completed);
+    } catch (error) {
+      console.error("🚨 주문 정보 가져오기 실패:", error);
+      alert("서버 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // 모달 열기
   const openModal = (orderId: number) => {
@@ -96,6 +127,9 @@ export default function AdminOrderPage() {
       try {
         const response = await fetch(`http://localhost:8080/admin/orders/${selectedOrderId}`, {
           method: 'DELETE',
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+          }
         });
 
         if (!response.ok) {
@@ -112,6 +146,8 @@ export default function AdminOrderPage() {
       }
     }
   };
+
+  if (loading) return <p>주문 정보를 불러오는 중...</p>;
 
   return (
     <div className="container">
