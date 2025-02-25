@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  trailingSlash: false, // 자동 슬래시 제거
 };
 
 export default nextConfig;
+
