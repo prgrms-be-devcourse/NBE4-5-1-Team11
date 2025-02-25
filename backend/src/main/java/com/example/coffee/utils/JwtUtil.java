@@ -3,6 +3,9 @@ package com.example.coffee.utils;
 import com.example.coffee.user.domain.Authority;
 import com.example.coffee.user.domain.Token;
 import com.example.coffee.user.domain.User;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -58,18 +61,18 @@ public class JwtUtil {
     }
 
     public Long extractId(String token) {
+        Claims claims;
         try {
-             return Jwts.parser()
-                    .verifyWith(jwtCredentials.secretKey())
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload()
-                    .get("id", Long.class);
-            // return Long.valueOf(id);
+            claims = Jwts.parser()
+                .verifyWith(jwtCredentials.secretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
 
-        } catch (Exception e) {
-            return null;
+        } catch (ExpiredJwtException e) {
+            return e.getClaims().get("id", Long.class);
         }
+        return claims.get("id", Long.class);
     }
 
     public String extractEmail(String token) {

@@ -35,6 +35,10 @@ public class Order {
     private  String code; // 우편 번호
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Status status;
 
+    public void updateState() {
+        this.status = Status.DELIVERED;
+    }
 }

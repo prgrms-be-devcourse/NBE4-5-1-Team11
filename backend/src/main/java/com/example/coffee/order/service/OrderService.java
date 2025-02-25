@@ -11,10 +11,10 @@ import com.example.coffee.product.domain.Product;
 import com.example.coffee.product.domain.repository.ProductRepository;
 import com.example.coffee.user.domain.User;
 import com.example.coffee.user.domain.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -130,10 +130,8 @@ public class OrderService {
                 });
     }
 
-//    // 주문 전체 삭제
-//    @Transactional
-//    public void deleteAll() {
-//        orderProductRepository.deleteAll();
-//        orderRepository.deleteAll();
-//    }
+    @Transactional
+    public void updateState() {
+        orderRepository.findAll().forEach(Order::updateState);
+    }
 }
