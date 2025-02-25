@@ -38,6 +38,14 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    public void updateTotalPrice(int totalPrice) {
+        this.totalPrice += totalPrice;
+    }
+
+    public void updateCreateAt(LocalDateTime now) {
+        this.createdAt = now;
+    }
+
     public void updateState() {
         this.status = Status.DELIVERED;
     }
