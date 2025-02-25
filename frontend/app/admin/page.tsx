@@ -57,17 +57,24 @@ export default function AdminOrderPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    checkAdminAccess(); // 관리자 여부 확인
+  }, []);
+
+  const checkAdminAccess = () => {
+    const token = localStorage.getItem("accessToken");
+    const userRole = localStorage.getItem("userRole");
+
+    if (!token || userRole !== "ADMIN") {
+      alert("⚠️ 권한이 없습니다.");
+      router.push("/");
+      return;
+    }
+
     fetchOrders();
-  }, [router]);
+  };
 
   const fetchOrders = async () => {
     const token = localStorage.getItem("accessToken");
-
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      router.push("/auth");
-      return;
-    }
 
     try {
       const response = await fetch("http://localhost:8080/admin/orders", {
@@ -90,12 +97,10 @@ export default function AdminOrderPage() {
       }
 
       const orders: Order[] = await response.json();
-
       if (!Array.isArray(orders)) {
         throw new Error("올바른 주문 데이터 형식이 아닙니다.");
       }
 
-      // 배송 상태 분류
       const pending = orders.filter(order => order.status === 'PENDING');
       const completed = orders.filter(order => order.status === 'DELIVERED');
 
@@ -106,44 +111,6 @@ export default function AdminOrderPage() {
       alert("서버 오류가 발생했습니다.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  // 모달 열기
-  const openModal = (orderId: number) => {
-    setSelectedOrderId(orderId);
-    setShowModal(true);
-  };
-
-  // 모달 닫기
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedOrderId(null);
-  };
-
-  // 주문 취소 처리
-  const handleCancelOrder = async () => {
-    if (selectedOrderId !== null) {
-      try {
-        const response = await fetch(`http://localhost:8080/admin/orders/${selectedOrderId}`, {
-          method: 'DELETE',
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('주문 취소에 실패했습니다.');
-        }
-
-        // 주문 취소 후 UI에서 즉시 반영
-        setPendingOrders(prevOrders => prevOrders.filter(order => order.id !== selectedOrderId));
-      } catch (error) {
-        console.error('Error cancelling order:', error);
-        alert('주문 취소 중 오류가 발생했습니다.');
-      } finally {
-        closeModal();
-      }
     }
   };
 
@@ -182,7 +149,7 @@ export default function AdminOrderPage() {
                     <td>{formatDate(order.createdAt)}</td>
                     <td>{order.products.map(product => `${product.product.name} (${product.quantity}개)`).join(', ')}</td>
                     <td>
-                      <button className="cancelButton" onClick={() => openModal(order.id)}>취소</button>
+                      <button className="cancelButton" onClick={() => setSelectedOrderId(order.id)}>취소</button>
                     </td>
                   </tr>
                 ))
@@ -230,7 +197,7 @@ export default function AdminOrderPage() {
       </div>
 
       {/* Modal */}
-      <Modal isOpen={showModal} onClose={closeModal} onConfirm={handleCancelOrder} />
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} onConfirm={() => console.log('취소')} />
     </div>
   );
 }
