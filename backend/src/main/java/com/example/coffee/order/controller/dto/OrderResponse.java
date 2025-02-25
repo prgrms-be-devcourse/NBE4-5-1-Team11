@@ -4,6 +4,7 @@ import com.example.coffee.order.domain.Order;
 import com.example.coffee.order.domain.Status;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -13,6 +14,7 @@ public record OrderResponse(
         String address,
         String code,
         Integer totalPrice,
+        LocalDateTime createdAt,
         Status status,
         List<OrderProductResponse> products
 ) {
@@ -24,6 +26,7 @@ public record OrderResponse(
                 order.getAddress(),
                 order.getCode(),
                 order.getTotalPrice(),
+                order.getCreatedAt(),
                 order.getStatus(),
                 productResponses
         );
