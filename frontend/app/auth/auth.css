@@ -1,0 +1,185 @@
+/* 🔹 전체 페이지 컨테이너 */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+}
+
+/* 🔹 로그인 & 회원가입 카드 */
+.auth-card {
+  background: white;
+  padding: 36px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 380px;
+  max-width: 100%;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+}
+
+/* 🔹 제목 스타일 */
+.auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 18px;
+}
+
+/* 🔹 폼 스타일 */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+/* 🔹 입력 필드 & 버튼 크기 통일 */
+.auth-input,
+.auth-button,
+.auth-address-input,
+.auth-address-button {
+  width: 92%;
+  max-width: 320px;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+/* 🔹 입력 필드 스타일 */
+.auth-input {
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.auth-input:focus {
+  border-color: #000;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 에러 메시지 */
+.auth-error {
+  color: #e53935;
+  font-size: 13px;
+  text-align: left;
+  margin-top: -4px;
+}
+
+/* 🔹 버튼 (검은색 유지) */
+.auth-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-button:hover {
+  background-color: #222;
+}
+
+.auth-button:active {
+  transform: scale(0.98);
+}
+
+/* 🔹 로그인/회원가입 전환 문구 */
+.auth-switch {
+  font-size: 14px;
+  color: #555;
+  margin-top: 12px;
+}
+
+/* 🔹 링크 스타일 */
+.auth-link {
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* 🔹 주소 입력 필드 */
+.auth-address-input {
+  border: 1px solid #ddd;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.auth-address-input:focus {
+  border-color: #000;
+  outline: none;
+}
+
+/* 🔹 주소 검색 버튼 (검은색 유지) */
+.auth-address-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.auth-address-button:hover {
+  background-color: #222;
+}
+
+.auth-address-button:active {
+  transform: scale(0.98);
+}
+
+/* 🔹 개인정보 동의 체크박스 */
+.auth-consent-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.auth-consent-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.auth-consent-checkbox.checked {
+  background-color: #000;
+  border-color: #000;
+  color: white;
+}
+
+.auth-consent-label {
+  font-size: 14px;
+  color: #333;
+}
+
+/* 🔹 반응형 디자인 */
+@media (max-width: 768px) {
+  .auth-card {
+    width: 95%;
+  }
+
+  .auth-title {
+    font-size: 20px;
+  }
+
+  .auth-button {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .auth-input {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
