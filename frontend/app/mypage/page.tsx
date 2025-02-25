@@ -106,7 +106,7 @@ const OrdersPage = () => {
 
   return (
     <div className="orders-container">
-      <h1>내 주문 목록</h1>
+      <h1>주문 목록</h1>
       {orders.length === 0 ? (
         <p>주문 내역이 없습니다.</p>
       ) : (
@@ -114,6 +114,7 @@ const OrdersPage = () => {
           {orders.map((order) => (
             <li key={order.id} className="order-item">
               <h3>주문 번호: {order.id}</h3>
+              <p>메일: {order.email}</p>
               <p>주문 시간: {new Date(order.createdAt).toLocaleString("ko-KR")}</p>
               <p>주소: {order.address} {order.code}</p>
               <p>총 가격: {order.totalPrice}원</p>
