@@ -109,7 +109,10 @@ public class OrderService {
 
         // 마지막 주문이 14시 전이고 orderRequest의 주문 시간도 14시 전이면 추가
         // 마지막 주문이 14시 후이고 orderRequest의 주문 시간도 14시 후라면 추가
-        return orderList.get(0);
+        Order order = orderList.get(0);
+        order.updateCreateAt(now);
+        order.updateTotalPrice(orderRequest.totalPrice());
+        return orderRepository.save(order);
     }
 
     private Order createOrder(User user, CreateOrderRequest orderRequest, LocalDateTime now) {
