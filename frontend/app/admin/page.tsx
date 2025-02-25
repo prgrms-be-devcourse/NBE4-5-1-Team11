@@ -25,7 +25,30 @@ interface Order {
   code: string;
   totalPrice: number;
   products: OrderProduct[];
+  status: 'PENDING' | 'DELIVERED';
+  createdAt: string; // 주문 시간 추가
 }
+
+// 📌 주문 시간 변환 함수 (수정됨)
+const formatDate = (dateString: string) => {
+  if (!dateString) return '날짜 없음';
+
+  const parsedDate = new Date(dateString.includes('T') ? dateString : dateString.replace(' ', 'T'));
+
+  if (isNaN(parsedDate.getTime())) {
+    console.error(`Invalid date format: ${dateString}`);
+    return 'Invalid Date';
+  }
+
+  return parsedDate.toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+};
 
 export default function AdminOrderPage() {
   const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
@@ -43,8 +66,13 @@ export default function AdminOrderPage() {
         }
 
         const orders: Order[] = await response.json();
-        setPendingOrders(orders);
-        setCompletedOrders([]); // 배송 완료 주문은 비움, 상태 값 들어오는 거보고 수정 필요
+
+        // 주문 상태에 따라 분류
+        const pending = orders.filter(order => order.status === 'PENDING');
+        const completed = orders.filter(order => order.status === 'DELIVERED');
+
+        setPendingOrders(pending);
+        setCompletedOrders(completed);
       } catch (error: any) {
         console.error('Error fetching orders:', error);
         setError(error.message);
@@ -102,6 +130,7 @@ export default function AdminOrderPage() {
                 <th>이메일</th>
                 <th>주소</th>
                 <th>가격</th>
+                <th>주문시간</th>
                 <th>구매내역</th>
                 <th>취소</th>
               </tr>
@@ -109,7 +138,7 @@ export default function AdminOrderPage() {
             <tbody>
               {pendingOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="emptyText">주문이 없습니다.</td>
+                  <td colSpan={7} className="emptyText">배송 전 주문이 없습니다.</td>
                 </tr>
               ) : (
                 pendingOrders.map(order => (
@@ -118,6 +147,7 @@ export default function AdminOrderPage() {
                     <td>{order.email}</td>
                     <td>{order.address} {order.code}</td>
                     <td>{order.totalPrice}</td>
+                    <td>{formatDate(order.createdAt)}</td>
                     <td>{order.products.map(product => `${product.product.name} (${product.quantity}개)`).join(', ')}</td>
                     <td>
                       <button className="cancelButton" onClick={() => openModal(order.id)}>취소</button>
@@ -141,13 +171,14 @@ export default function AdminOrderPage() {
                 <th>이메일</th>
                 <th>주소</th>
                 <th>가격</th>
+                <th>주문시간</th>
                 <th>구매내역</th>
               </tr>
             </thead>
             <tbody>
               {completedOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="emptyText">배송 완료된 주문이 없습니다.</td>
+                  <td colSpan={6} className="emptyText">배송 완료된 주문이 없습니다.</td>
                 </tr>
               ) : (
                 completedOrders.map(order => (
@@ -156,6 +187,7 @@ export default function AdminOrderPage() {
                     <td>{order.email}</td>
                     <td>{order.address} {order.code}</td>
                     <td>{order.totalPrice}</td>
+                    <td>{formatDate(order.createdAt)}</td>
                     <td>{order.products.map(product => `${product.product.name} (${product.quantity}개)`).join(', ')}</td>
                   </tr>
                 ))
