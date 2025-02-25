@@ -32,10 +32,10 @@ public class TestDataInit implements CommandLineRunner {
         }
 
         // 제품 데이터 삽입
-        Product americano = productRepository.save(Product.builder().name("Americano").price(5000).build());
-        Product latte = productRepository.save(Product.builder().name("Latte").price(5500).build());
-        Product cappuccino = productRepository.save(Product.builder().name("Cappuccino").price(6000).build());
-        Product greenTea = productRepository.save(Product.builder().name("GreenTea").price(4500).build());
+        Product americano = productRepository.save(Product.builder().name("Brazil Serra Do Caparaó").price(5000).image("https://i.imgur.com/O05RZ6Y.png").build());
+        Product latte = productRepository.save(Product.builder().name("Columbia Nariñó").price(5500).image("https://i.imgur.com/PxLJVR8.png").build());
+        Product cappuccino = productRepository.save(Product.builder().name("Columbia Quindío").image("https://i.imgur.com/NvPAcBm.png").price(5500).build());
+        Product greenTea = productRepository.save(Product.builder().name("Ethiopia Sidamo").image("https://i.imgur.com/BeAPnQR.png").price(6000).build());
 
         // 유저 데이터 삽입
         User user1 = userRepository.save(new User("han000@naver.com"));
@@ -43,6 +43,7 @@ public class TestDataInit implements CommandLineRunner {
         User user3 = userRepository.save(new User("aaaa1111@naver.com"));
         User user4 = userRepository.save(new User("bbbb222@gmail.com"));
 
+        // 주문 데이터 삽입
         Order order1 = orderRepository.save(
                 Order.builder()
                         .user(user2)
