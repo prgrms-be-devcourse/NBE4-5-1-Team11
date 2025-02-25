@@ -1,5 +1,6 @@
 package com.example.coffee.product.controller;
 
+import com.example.coffee.product.controller.dto.CreateProductRequest;
 import com.example.coffee.product.controller.dto.ProductResponse;
 import com.example.coffee.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +18,13 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+
+    @Operation(summary = "상품 생성")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createProduct(CreateProductRequest createProductRequest) {
+        productService.create(createProductRequest);
+    }
 
     @Operation(summary = "상품 목록 조회")
     @GetMapping

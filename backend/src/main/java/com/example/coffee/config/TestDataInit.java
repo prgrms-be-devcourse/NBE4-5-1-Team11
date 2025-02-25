@@ -26,16 +26,16 @@ public class TestDataInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        /*if (orderRepository.count() > 0) {
-            System.out.println("✅ 이미 초기 데이터가 존재하므로 추가하지 않습니다.");
+        if (orderRepository.count() > 0) {
+            System.out.println("✅ 이미 초기 데이터 존재");
             return;
         }
 
         // 제품 데이터 삽입
-        Product americano = productRepository.save(new Product(1L, "Americano", 5000));
-        Product latte = productRepository.save(new Product(2L, "Latte", 5500));
-        Product cappuccino = productRepository.save(new Product(3L, "Cappuccino", 6000));
-        Product greenTea = productRepository.save(new Product(4L, "GreenTea", 4500));
+        Product americano = productRepository.save(Product.builder().name("Americano").price(5000).build());
+        Product latte = productRepository.save(Product.builder().name("Latte").price(5500).build());
+        Product cappuccino = productRepository.save(Product.builder().name("Cappuccino").price(6000).build());
+        Product greenTea = productRepository.save(Product.builder().name("GreenTea").price(4500).build());
 
         // 유저 데이터 삽입
         User user1 = userRepository.save(new User("han000@naver.com"));
@@ -43,7 +43,6 @@ public class TestDataInit implements CommandLineRunner {
         User user3 = userRepository.save(new User("aaaa1111@naver.com"));
         User user4 = userRepository.save(new User("bbbb222@gmail.com"));
 
-        // 주문 데이터 삽입 (첫 번째 주문)
         Order order1 = orderRepository.save(
                 Order.builder()
                         .user(user2)
@@ -54,23 +53,19 @@ public class TestDataInit implements CommandLineRunner {
                         .build()
         );
 
-        // 주문 상품 데이터 삽입 (첫 번째 주문)
         orderProductRepository.saveAll(List.of(
                 OrderProduct.builder()
                         .order(order1)
                         .product(cappuccino)
-                        .price(6000)
                         .quantity(2)
                         .build(),
                 OrderProduct.builder()
                         .order(order1)
                         .product(greenTea)
-                        .price(4500)
                         .quantity(1)
                         .build()
         ));
 
-        // 주문 데이터 삽입 (두 번째 주문)
         Order order2 = orderRepository.save(
                 Order.builder()
                         .user(user3)
@@ -81,22 +76,60 @@ public class TestDataInit implements CommandLineRunner {
                         .build()
         );
 
-        // 주문 상품 데이터 삽입 (두 번째 주문)
         orderProductRepository.saveAll(List.of(
                 OrderProduct.builder()
                         .order(order2)
                         .product(americano)
-                        .price(5000)
                         .quantity(1)
                         .build(),
                 OrderProduct.builder()
                         .order(order2)
                         .product(latte)
-                        .price(5500)
                         .quantity(1)
                         .build()
         ));
 
-        System.out.println("✅ 초기 데이터 삽입 완료!");*/
+        Order order3 = orderRepository.save(
+                Order.builder()
+                        .user(user1)
+                        .address("경기도 오산시")
+                        .code("18110")
+                        .totalPrice(27000)
+                        .createdAt(LocalDateTime.now())
+                        .build()
+        );
+
+        orderProductRepository.saveAll(List.of(
+                OrderProduct.builder()
+                        .order(order3)
+                        .product(cappuccino)
+                        .quantity(3)
+                        .build(),
+                OrderProduct.builder()
+                        .order(order1)
+                        .product(greenTea)
+                        .quantity(2)
+                        .build()
+        ));
+
+        Order order4 = orderRepository.save(
+                Order.builder()
+                        .user(user1)
+                        .address("경기도 오산시")
+                        .code("202020")
+                        .totalPrice(10000)
+                        .createdAt(LocalDateTime.now())
+                        .build()
+        );
+
+        orderProductRepository.saveAll(List.of(
+                OrderProduct.builder()
+                        .order(order4)
+                        .product(americano)
+                        .quantity(2)
+                        .build()
+        ));
+
+        System.out.println("✅ 초기 데이터 삽입 완료");
     }
 }
