@@ -116,7 +116,7 @@ export default function AdminOrderPage() {
                   <tr key={order.id}>
                     <td>{order.id}</td>
                     <td>{order.email}</td>
-                    <td>{order.address}</td>
+                    <td>{order.address} {order.code}</td>
                     <td>{order.totalPrice}</td>
                     <td>{order.products.map(product => `${product.product.name} (${product.quantity}개)`).join(', ')}</td>
                     <td>
@@ -154,7 +154,7 @@ export default function AdminOrderPage() {
                   <tr key={order.id}>
                     <td>{order.id}</td>
                     <td>{order.email}</td>
-                    <td>{order.address}</td>
+                    <td>{order.address} {order.code}</td>
                     <td>{order.totalPrice}</td>
                     <td>{order.products.map(product => `${product.product.name} (${product.quantity}개)`).join(', ')}</td>
                   </tr>
