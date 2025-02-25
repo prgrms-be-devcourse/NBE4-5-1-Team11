@@ -289,6 +289,25 @@ h2 {
   margin: 0;
   color: #555;
 }
+/* 📌 주소 입력창 + 검색 버튼 스타일 */
+.addressContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.searchButton {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.searchButton:hover {
+  background-color: #0056b3;
+}
 
 /* 반응형 디자인 */
 @media (max-width: 1024px) {
