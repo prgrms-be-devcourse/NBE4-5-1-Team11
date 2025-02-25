@@ -9,10 +9,10 @@ import com.example.coffee.user.domain.Token;
 import com.example.coffee.user.domain.User;
 import com.example.coffee.user.domain.repository.UserRepository;
 import com.example.coffee.utils.JwtUtil;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
