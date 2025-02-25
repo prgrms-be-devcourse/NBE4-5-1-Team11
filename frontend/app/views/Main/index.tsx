@@ -15,9 +15,8 @@ const Home = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
-  const [code, setCode] = useState<string>("");
+  const [code, setCode] = useState<string>(""); // 📌 우편번호 필드 추가
 
-  // 📌 상품 목록 가져오기 (최초 1회 실행)
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -36,18 +35,15 @@ const Home = () => {
   // 📌 장바구니에 상품 추가
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
-      const itemIndex = prevCart.findIndex((item) => item.product.id === product.id);
-      if (itemIndex !== -1) {
-        // 이미 장바구니에 있는 경우 수량 증가
-        const updatedCart = [...prevCart];
-        updatedCart[itemIndex].quantity += 1;
-        return updatedCart;
-      } else {
-        // 새로운 상품 추가
-        return [...prevCart, { product, quantity: 1 }];
-      }
+      return prevCart.map((item) => {
+        if (item.product.id === product.id) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      }).concat(prevCart.some(item => item.product.id === product.id) ? [] : [{ product, quantity: 1 }]);
     });
   };
+  
 
   // 📌 장바구니에서 상품 삭제
   const removeFromCart = (productId: number) => {
@@ -82,55 +78,40 @@ const Home = () => {
   // 📌 주문 처리 함수
   const handleOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+  
     try {
-      // 1️⃣ 기존 유저 확인
-      let userResponse = await fetch(`http://localhost:8080/users?email=${email}`);
-      let userResult = await userResponse.json();
-  
-      if (!userResponse.ok || !userResult.id) {
-        // 2️⃣ 유저가 없으면 회원가입 진행
-        const newUserResponse = await fetch("http://localhost:8080/users", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        });
-  
-        if (!newUserResponse.ok) throw new Error("회원 등록 실패");
-  
-        userResult = await newUserResponse.json();
-      }
-  
       // 3️⃣ 주문 데이터 생성
       const orderData = {
-        userId: userResult.id,
+        email,  // email 추가
         address,
         code,
-        createdAt: new Date().toISOString(),
         totalPrice,
         products: cart.map((item) => ({
           id: item.product.id,
-          name: item.product.name,
           quantity: item.quantity,
         })),
       };
   
+      console.log("✅ 주문 데이터 생성 완료:", orderData);
+  
       // 4️⃣ 주문 요청
-      const orderResponse = await fetch("http://localhost:8080/order", {
+      const orderResponse = await fetch("http://localhost:8080/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
       });
   
-      if (!orderResponse.ok) throw new Error("주문 요청 실패");
+      console.log("✅ 주문 응답 상태:", orderResponse.status);
+      if (!orderResponse.ok) throw new Error("🚨 주문 요청 실패");
   
-      alert("주문이 완료되었습니다!");
+      alert("✅ 주문이 완료되었습니다!");
       setCart([]); // 장바구니 초기화
     } catch (error) {
-      console.error("처리 중 오류 발생:", error);
+      console.error("🚨 처리 중 오류 발생:", error);
       alert("처리 중 오류가 발생했습니다.");
     }
   };
+  
 
   // 📌 로딩 상태 처리
   if (loading) {
@@ -145,7 +126,7 @@ const Home = () => {
         <div className="productList">
           {products.map((product) => (
             <div key={product.id} className="productCard">
-              <img src="/default-coffee.png" alt={product.name} className="productImage" />
+              <img src={product.image} alt={product.name} className="productImage" />
               <div className="productInfo">
                 <div className="productDetails">
                   <h3 className="productTitle">{product.name}</h3>
