@@ -7,6 +7,7 @@ import './style.css';
 interface Product {
   id: number;
   name: string;
+  image: string;
   price: number;
 }
 
@@ -26,19 +27,14 @@ interface Order {
   totalPrice: number;
   products: OrderProduct[];
   status: 'PENDING' | 'DELIVERED';
-  createdAt: string; // 주문 시간 추가
+  createdAt: string;
 }
 
-// 📌 주문 시간 변환 함수 (수정됨)
+// 주문 시간 변환
 const formatDate = (dateString: string) => {
   if (!dateString) return '날짜 없음';
 
   const parsedDate = new Date(dateString.includes('T') ? dateString : dateString.replace(' ', 'T'));
-
-  if (isNaN(parsedDate.getTime())) {
-    console.error(`Invalid date format: ${dateString}`);
-    return 'Invalid Date';
-  }
 
   return parsedDate.toLocaleString('ko-KR', {
     year: 'numeric',
@@ -67,7 +63,7 @@ export default function AdminOrderPage() {
 
         const orders: Order[] = await response.json();
 
-        // 주문 상태에 따라 분류
+        // 배송 상태 분류
         const pending = orders.filter(order => order.status === 'PENDING');
         const completed = orders.filter(order => order.status === 'DELIVERED');
 
@@ -141,9 +137,9 @@ export default function AdminOrderPage() {
                   <td colSpan={7} className="emptyText">배송 전 주문이 없습니다.</td>
                 </tr>
               ) : (
-                pendingOrders.map(order => (
+                pendingOrders.map((order, idx) => (
                   <tr key={order.id}>
-                    <td>{order.id}</td>
+                    <td>{idx + 1}</td>
                     <td>{order.email}</td>
                     <td>{order.address} {order.code}</td>
                     <td>{order.totalPrice}</td>
@@ -181,9 +177,9 @@ export default function AdminOrderPage() {
                   <td colSpan={6} className="emptyText">배송 완료된 주문이 없습니다.</td>
                 </tr>
               ) : (
-                completedOrders.map(order => (
+                completedOrders.map((order, idx) => (
                   <tr key={order.id}>
-                    <td>{order.id}</td>
+                    <td>{idx + 1}</td>
                     <td>{order.email}</td>
                     <td>{order.address} {order.code}</td>
                     <td>{order.totalPrice}</td>
@@ -197,7 +193,7 @@ export default function AdminOrderPage() {
         </div>
       </div>
 
-      {/* 모달 컴포넌트 */}
+      {/* Modal */}
       <Modal isOpen={showModal} onClose={closeModal} onConfirm={handleCancelOrder} />
     </div>
   );
