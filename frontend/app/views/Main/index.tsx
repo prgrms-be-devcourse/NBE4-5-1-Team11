@@ -80,6 +80,7 @@ const Home = () => {
     e.preventDefault();
   
     try {
+
       // 3️⃣ 주문 데이터 생성
       const orderData = {
         email,  // email 추가

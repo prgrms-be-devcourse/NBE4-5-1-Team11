@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation";
 import { Order } from "../types/interface";
 import "./style.css";
 
-const API_URL = "http://localhost:8080/orders";
+const API_URL = "http://localhost:8080";
 
 const OrdersPage = () => {
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [userId, setUserId] = useState<number | null>(null); // 유저 ID 저장
 
   useEffect(() => {
     fetchOrders();
@@ -27,7 +28,7 @@ const OrdersPage = () => {
     }
 
     try {
-      const response = await fetch(`${API_URL}/user`, {
+      const response = await fetch(`${API_URL}/orders/user`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -53,6 +54,11 @@ const OrdersPage = () => {
       }
 
       setOrders(orderData);
+
+      // 첫 번째 주문에서 유저 ID 가져오기 (모든 주문이 같은 사용자 ID를 가지므로)
+      if (orderData.length > 0) {
+        setUserId(orderData[0].id);
+      }
     } catch (error) {
       console.error("🚨 주문 정보 가져오기 실패:", error);
       alert("서버 오류가 발생했습니다.");
@@ -61,16 +67,21 @@ const OrdersPage = () => {
     }
   };
 
-  /** ✅ 주문 취소 함수 */
-  const cancelOrder = async (orderId: number) => {
+  /** ✅ 회원 탈퇴 함수 */
+  const deleteUser = async () => {
+    if (!userId) {
+      alert("회원 정보를 찾을 수 없습니다.");
+      return;
+    }
+
     const token = localStorage.getItem("accessToken");
 
-    if (!confirm("정말로 주문을 취소하시겠습니까?")) {
+    if (!confirm("정말로 회원 탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
       return;
     }
 
     try {
-      const response = await fetch(`${API_URL}/cancel/${orderId}`, {
+      const response = await fetch(`${API_URL}/users/${userId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -79,14 +90,15 @@ const OrdersPage = () => {
       });
 
       if (!response.ok) {
-        throw new Error("주문 취소에 실패했습니다.");
+        throw new Error("회원 탈퇴에 실패했습니다.");
       }
 
-      alert("주문이 취소되었습니다.");
-      fetchOrders(); // 주문 목록 갱신
+      alert("회원 탈퇴가 완료되었습니다.");
+      localStorage.removeItem("accessToken"); // 토큰 삭제
+      router.push("/auth"); // 로그인 페이지로 이동
     } catch (error) {
-      console.error("🚨 주문 취소 실패:", error);
-      alert("주문 취소 중 오류가 발생했습니다.");
+      console.error("🚨 회원 탈퇴 실패:", error);
+      alert("회원 탈퇴 중 오류가 발생했습니다.");
     }
   };
 
@@ -102,21 +114,15 @@ const OrdersPage = () => {
           {orders.map((order) => (
             <li key={order.id} className="order-item">
               <h3>주문 번호: {order.id}</h3>
-              <p>이메일: {order.email}</p>
-              <p>주소: {order.address}</p>
-              <p>우편번호: {order.code}</p>
+              <p>주문 시간: {new Date(order.createdAt).toLocaleString("ko-KR")}</p>
+              <p>주소: {order.address} {order.code}</p>
               <p>총 가격: {order.totalPrice}원</p>
               <p className={order.status === "DELIVERED" ? "delivered" : "pending"}>
                 배송 상태: {order.status === "DELIVERED" ? "배송 완료" : "배송 전"}
               </p>
 
               {/* ✅ 배송 전(PENDING) 상태에서만 주문 취소 버튼 표시 */}
-              {order.status !== "DELIVERED" && (
-                <button className="cancel-btn" onClick={() => cancelOrder(order.id)}>
-                  주문 취소
-                </button>
-              )}
-
+              
               {/* 주문 상세 보기 버튼 */}
               <button className="detail-btn" onClick={() => setSelectedOrder(order)}>
                 주문 상세 보기
@@ -125,6 +131,11 @@ const OrdersPage = () => {
           ))}
         </ul>
       )}
+
+      {/* ✅ 회원 탈퇴 버튼 */}
+      <button className="delete-btn" onClick={deleteUser}>
+        회원 탈퇴
+      </button>
 
       {/* 주문 상세 모달 */}
       {selectedOrder && (
