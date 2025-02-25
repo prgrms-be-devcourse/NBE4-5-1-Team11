@@ -60,7 +60,6 @@ public class OrderService {
 
     // 유저별 주문 전체 조회
     public List<OrderResponse> findAllByUser(User user) {
-        System.out.println("여기까지 못 옴?");
         return orderRepository.findAllByUser(user, Sort.by(Sort.Order.desc("createdAt"))).stream()
                 .map(order -> {
                     List<OrderProductResponse> productResponses = orderProductRepository.findAllByOrder(order).stream()
@@ -97,6 +96,11 @@ public class OrderService {
         // 첫 주문이면 생성
         if (orderList.isEmpty()) return createOrder(user, orderRequest, now);
 
+        // 주소가 달라도 생성
+        if (!orderList.get(0).getAddress().equals(orderRequest.address())
+                || !orderList.get(0).getCode().equals(orderRequest.code())) {
+            return createOrder(user, orderRequest, now);
+        }
 
         // 마지막 주문이 14시 전인데 orderRequest의 주문 시간은 14시 후라면 생성
         if (orderList.get(0).getCreatedAt().isBefore(DELIVERY_TIME) && now.isAfter(DELIVERY_TIME)) {
