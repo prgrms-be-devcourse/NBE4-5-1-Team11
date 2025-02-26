@@ -81,7 +81,7 @@ const OrdersPage = () => {
     }
 
     try {
-      const response = await fetch(`${API_URL}/users/${userId}`, {
+      const response = await fetch(`${API_URL}/users/me`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
