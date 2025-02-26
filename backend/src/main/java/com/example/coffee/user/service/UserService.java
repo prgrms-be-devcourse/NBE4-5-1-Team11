@@ -55,7 +55,7 @@ public class UserService {
         user.updateRefreshToken(token.refreshToken());
 
         return TokenResponse.from(token);
-     }
+    }
 
     @Transactional
     public TokenResponse refreshAccessToken(String refreshToken) {
@@ -106,23 +106,22 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    /*public List<OrderResponse> getUserOrders(Long userId) {
-        // 유저 조회
+    @Transactional
+    public void deleteUserByToken(String token) {
+        // "Bearer " 접두어 제거
+        String accessToken = token.replace("Bearer ", "");
+
+        // 토큰에서 사용자 ID 추출
+        Long userId = jwtUtil.extractId(accessToken);
+        if (userId == null) {
+            throw new IllegalArgumentException("Invalid access token: userId is null");
+        }
+
+        // 사용자 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 해당 유저의 주문 목록 조회
-        List<Order> orders = orderRepository.findAllByUser(user);
-
-        // 주문 목록을 OrderResponse로 변환
-        return orders.stream()
-                .map(order -> {
-                    List<OrderProduct> orderProducts = orderProductRepository.findByOrder(order); // 주문한 제품 조회
-                    List<OrderProductResponse> productResponses = orderProducts.stream()
-                            .map(OrderProductResponse::from)
-                            .toList();
-                    return OrderResponse.from(order, productResponses);
-                })
-                .toList();
-    }*/
+        // 주문 정보는 삭제하지 않고, 사용자 계정만 삭제
+        userRepository.delete(user);
+    }
 }
