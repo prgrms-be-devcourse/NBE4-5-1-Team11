@@ -1,5 +1,6 @@
 package com.example.coffee.user.controller;
 
+import com.example.coffee.security.SecurityUtil;
 import com.example.coffee.user.controller.dto.CreateUserRequest;
 import com.example.coffee.user.controller.dto.CreateUserResponse;
 import com.example.coffee.user.controller.dto.LoginRequest;
@@ -58,7 +59,7 @@ public class UserController {
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping("/me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@RequestHeader("Authorization") String token) {
-        userService.deleteUserByToken(token);
+    public void deleteUser() {
+        userService.deleteCurrentUser(SecurityUtil.getCurrentUserWithLogin());
     }
 }

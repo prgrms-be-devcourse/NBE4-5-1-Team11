@@ -47,6 +47,10 @@ public class UserService {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (user.getAuthority().equals(Authority.ROLE_REGISTERED)) {
+            throw new IllegalArgumentException("회원가입이 필요합니다.");
+        }
+
         if(!passwordEncoder.matches(request.password(), user.getPassword())){
             throw new RuntimeException("Wrong password");
         }
@@ -107,21 +111,8 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserByToken(String token) {
-        // "Bearer " 접두어 제거
-        String accessToken = token.replace("Bearer ", "");
-
-        // 토큰에서 사용자 ID 추출
-        Long userId = jwtUtil.extractId(accessToken);
-        if (userId == null) {
-            throw new IllegalArgumentException("Invalid access token: userId is null");
-        }
-
-        // 사용자 조회
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        // 주문 정보는 삭제하지 않고, 사용자 계정만 삭제
-        userRepository.delete(user);
+    public void deleteCurrentUser(User user) {
+        user.updateAuthority(Authority.ROLE_REGISTERED);
+        userRepository.save(user);
     }
 }
