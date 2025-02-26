@@ -38,7 +38,7 @@
       <a href="https://github.com/Woongbin06"><b>강웅빈</b></a>
     </td>
     <td align="center">
-      <a href="https://github.com/huipadyam"><img src="https://github.com/user-attachments/assets/49a65d9a-eadc-462f-9dc4-3dc67504dc2d" width="150px"/></a><br/>
+      <a href="https://github.com/huipadyam"><img src="https://github.com/user-attachments/assets/af373b76-d9d7-4713-ad3c-aa6abb93f8a3" width="150px"/></a><br/>
       <a href="https://github.com/huipadyam"><b>김채은</b></a>
     </td>
     <td align="center">
@@ -46,11 +46,11 @@
       <a href="https://github.com/xaxeon"><b>김하연</b></a>
     </td>
     <td align="center">
-      <a href="https://github.com/csjsseo"><img src="https://github.com/user-attachments/assets/ad8ff435-9eac-4dd5-a488-6df5b5d8f396" width="150px"/></a><br/>
+      <a href="https://github.com/csjsseo"><img src="https://github.com/user-attachments/assets/d5ea182f-3150-4e76-861f-0038508b65c2" width="150px"/></a><br/>
       <a href="https://github.com/csjsseo"><b>박종서</b></a>
     </td>
     <td align="center">
-      <a href="https://github.com/Hanjise0ng"><img src="https://github.com/user-attachments/assets/7c5e92a7-0c07-4d3a-95a2-f127c02a7d59" width="150px"/></a><br/>
+      <a href="https://github.com/Hanjise0ng"><img src="https://github.com/user-attachments/assets/b70a94a3-fc12-481b-8208-da0ae4fe0063" width="150px"/></a><br/>
       <a href="https://github.com/Hanjise0ng"><b>한지성</b></a>
     </td>
   </tr>
@@ -107,7 +107,6 @@
 ---
 
 ## 📮 **API 명세**
-![Image](https://github.com/user-attachments/assets/8ce36308-67be-4b05-806c-35fafc465def)
-
-
-
+<a><img src="https://github.com/user-attachments/assets/c4002ca7-1fa3-4f74-bc10-b9bfec777fdf" width="600px"/></a><br/>
+<a><img src="https://github.com/user-attachments/assets/dfa78fa6-a23d-4e6f-98cc-5ea6caf9ad50" width="600px"/></a><br/>
+<a><img src="https://github.com/user-attachments/assets/98c895dc-c99a-4abe-8121-f96eed9823d7" width="600px"/></a><br/>
