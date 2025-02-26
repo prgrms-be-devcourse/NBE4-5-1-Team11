@@ -31,11 +31,37 @@
 
 ## 👯 **팀원 소개**
 
-| ![강웅빈](https://github.com/user-attachments/assets/64bc3570-3330-467c-9dc3-7c8b9d5cd18b) | ![김채은](https://github.com/user-attachments/assets/49a65d9a-eadc-462f-9dc4-3dc67504dc2d) |      ![김하연](https://github.com/user-attachments/assets/479bfc7c-ceef-4555-a383-c1dac45aca80)      |      ![박종서](https://github.com/user-attachments/assets/ad8ff435-9eac-4dd5-a488-6df5b5d8f396)      |      ![한지성](https://github.com/user-attachments/assets/7c5e92a7-0c07-4d3a-95a2-f127c02a7d59)   |
-|:---------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-|                                **[강웅빈](GitHub_프로필_URL)**                                |                                **[김채은](GitHub_프로필_URL)**                                | **[김하연](GitHub_프로필_URL)** | **[박종서](GitHub_프로필_URL)** | **[한지성](GitHub_프로필_URL)** |
-|                                         Backend                                         |                                         Backend                                         |          Backend           |         Frontend          |     Frontend/Backend     |
-
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Woongbin06"><img src="https://github.com/user-attachments/assets/64bc3570-3330-467c-9dc3-7c8b9d5cd18b" width="150px"/></a><br/>
+      <a href="https://github.com/Woongbin06"><b>강웅빈</b></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/huipadyam"><img src="https://github.com/user-attachments/assets/49a65d9a-eadc-462f-9dc4-3dc67504dc2d" width="150px"/></a><br/>
+      <a href="https://github.com/huipadyam"><b>김채은</b></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/xaxeon"><img src="https://github.com/user-attachments/assets/479bfc7c-ceef-4555-a383-c1dac45aca80" width="150px"/></a><br/>
+      <a href="https://github.com/xaxeon"><b>김하연</b></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/csjsseo"><img src="https://github.com/user-attachments/assets/ad8ff435-9eac-4dd5-a488-6df5b5d8f396" width="150px"/></a><br/>
+      <a href="https://github.com/csjsseo"><b>박종서</b></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Hanjise0ng"><img src="https://github.com/user-attachments/assets/7c5e92a7-0c07-4d3a-95a2-f127c02a7d59" width="150px"/></a><br/>
+      <a href="https://github.com/Hanjise0ng"><b>한지성</b></a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">Backend</td>
+    <td align="center">Backend</td>
+    <td align="center">Backend</td>
+    <td align="center">Frontend</td>
+    <td align="center">Frontend/Backend</td>
+  </tr>
+</table>
 
 ---
 
