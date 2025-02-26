@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Modal from './modal';
+import ProductEditModal from './ProductEditModal';
 import './style.css';
 
 interface Product {
@@ -49,6 +50,7 @@ const formatDate = (dateString: string) => {
 
 export default function AdminOrderPage() {
   const router = useRouter();
+  const [showProductModal, setShowProductModal] = useState(false);
   const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
   const [completedOrders, setCompletedOrders] = useState<Order[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -151,6 +153,9 @@ export default function AdminOrderPage() {
 
   return (
     <div className="container">
+      {/* 상품 수정 버튼 */}
+      <button className="editButton" onClick={() => setShowProductModal(true)}>상품 수정</button>
+        
       {/* 배송 전 주문 목록 */}
       <div className="orderSection pendingOrders">
         <h2>배송 전 주문</h2>
@@ -228,8 +233,11 @@ export default function AdminOrderPage() {
           </table>
         </div>
       </div>
+      
+      {/* 상품 수정 모달 */}
+      <ProductEditModal isOpen={showProductModal} onClose={() => setShowProductModal(false)} />
 
-      {/* Modal */}
+      {/* 주문 취소 확인 모달 */}
       <Modal isOpen={showModal} onClose={closeModal} onConfirm={handleCancelOrder} />
     </div>
   );
