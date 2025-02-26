@@ -155,7 +155,7 @@ export default function AdminOrderPage() {
     <div className="container">
       {/* 상품 수정 버튼 */}
       <button className="editButton" onClick={() => setShowProductModal(true)}>상품 수정</button>
-
+        
       {/* 배송 전 주문 목록 */}
       <div className="orderSection pendingOrders">
         <h2>배송 전 주문</h2>

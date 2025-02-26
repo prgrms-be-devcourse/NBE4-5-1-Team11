@@ -55,10 +55,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @Operation(summary = "회원 삭제")
-    @DeleteMapping("/{id}")
+    @Operation(summary = "회원 탈퇴")
+    @DeleteMapping("/me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id){
-        userService.deleteUser(id);
+    public void deleteUser(@RequestHeader("Authorization") String token) {
+        userService.deleteUserByToken(token);
     }
 }
