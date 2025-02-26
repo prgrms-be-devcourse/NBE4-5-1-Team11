@@ -38,48 +38,36 @@ const Authentication = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-  
+
       const result = await response.json();
-      console.log("🔍 로그인 응답 데이터:", result); // ✅ 응답 확인
-  
-      if (!response.ok) {
-        setSignInError("email", { type: "manual", message: "이메일 또는 비밀번호가 올바르지 않습니다." });
-        return;
-      }
-  
-      console.log("✅ 저장할 accessToken:", result.accessToken);  // ✅ 여기서 `undefined`인지 확인
       localStorage.setItem("accessToken", result.accessToken);
       
-      
-    router.push("/");
-    setTimeout(() => {
+      router.push("/");
+      setTimeout(() => {
       window.location.reload(); // ✅ 100% 새로고침 보장
     }, 500); // ✅ 0.1초 뒤 새로고침 (router.push 적용 후 실행되도록)
       
-      
-  
     } catch (error) {
-      console.error("🚨 로그인 오류:", error);
+      alert("이메일 혹은 비밀번호가 일치하지 않습니다.");
     }
   };
   
+  const onSignUpSubmit = async (data: SignUp) => {
+    try {
+      const response = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    
+      const result = await response.json();
+       
+      alert("회원 등록이 완료되었습니다.");
+      setView("sign-in");
 
-  // 회원가입 요청
-const onSignUpSubmit = async (data: SignUp) => {
-  const response = await fetch(`${API_URL}/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-
-  const result = await response.json();
-  if (!response.ok) {
-    setSignUpError("email", { type: "manual", message: "이미 사용 중인 이메일입니다." });
-    return;
-  }
-
-  alert("회원가입 성공! 로그인해주세요.");
-  setView("sign-in");
+    } catch (error) {
+      alert("이미 존재하는 이메일입니다.");
+    }
   };
 
   return (
