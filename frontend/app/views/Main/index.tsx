@@ -76,42 +76,52 @@ const Home = () => {
   const totalPrice = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   // 📌 주문 처리 함수
-  const handleOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
-  
-    try {
+const handleOrder = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-      // 3️⃣ 주문 데이터 생성
-      const orderData = {
-        email,  // email 추가
-        address,
-        code,
-        totalPrice,
-        products: cart.map((item) => ({
-          id: item.product.id,
-          quantity: item.quantity,
-        })),
-      };
-  
-      console.log("✅ 주문 데이터 생성 완료:", orderData);
-  
-      // 4️⃣ 주문 요청
-      const orderResponse = await fetch("http://localhost:8080/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
-      });
-  
-      console.log("✅ 주문 응답 상태:", orderResponse.status);
-      if (!orderResponse.ok) throw new Error("🚨 주문 요청 실패");
-  
-      alert("✅ 주문이 완료되었습니다!");
-      setCart([]); // 장바구니 초기화
-    } catch (error) {
-      console.error("🚨 처리 중 오류 발생:", error);
-      alert("처리 중 오류가 발생했습니다.");
+  try {
+    // 1️⃣ 주문 목록이 비어있을 경우 예외 처리
+    if (cart.length === 0) {
+      alert("주문 목록이 비어 있습니다. 상품을 추가해주세요.");
+      return;
     }
-  };
+
+    // 2️⃣ 필수 입력 필드 검증
+    if (!email.trim() || !address.trim() || !code.trim()) {
+      alert("이메일, 주소, 우편번호를 모두 입력해주세요.");
+      return;
+    }
+
+    // 3️⃣ 주문 데이터 생성
+    const orderData = {
+      email,
+      address,
+      code,
+      totalPrice,
+      products: cart.map((item) => ({
+        id: item.product.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    console.log("✅ 주문 데이터 생성 완료:", orderData);
+
+    // 4️⃣ 주문 요청
+    const orderResponse = await fetch("http://localhost:8080/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderData),
+    });
+
+    if (!orderResponse.ok) throw new Error("주문 요청 실패");
+
+    alert("✅ 주문이 완료되었습니다!");
+    setCart([]); // 장바구니 초기화
+  } catch (error) {
+    alert("처리 중 오류가 발생했습니다.");
+  }
+};
+
   
 
   // 📌 로딩 상태 처리
