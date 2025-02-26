@@ -1,0 +1,173 @@
+/* 기본 스타일 */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 80px;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* 주문 섹션 스타일 */
+.orderSection {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 주문 카드 스타일 */
+.orderCardBox {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  border: 1px solid #eaeaea;
+}
+
+/* 테이블 스타일 */
+.orderTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orderTable th, .orderTable td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.orderTable th {
+  background-color: #f8f9fa;
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+}
+
+.orderTable tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.orderTable .emptyText {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  font-size: 15px;
+}
+
+/* 취소 버튼 스타일 */
+.cancelButton {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px; /* 내부 여백 조정 */
+  font-size: 14px; /* 글자 크기 */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap; /* 글자가 한 줄로 유지되도록 설정 */
+  width: 50px; /* 버튼 크기 고정 */
+  height: 30px; /* 버튼 높이 조정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cancelButton:hover {
+  background-color: #d9363e;
+}
+
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .orderSection {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .orderCardBox {
+    padding: 20px;
+  }
+}
+
+/* 모달 배경 (어두운 오버레이) */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 모달 컨테이너 */
+.modalContainer {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  text-align: center;
+}
+
+/* 모달 제목 */
+.modalTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+/* 모달 버튼 컨테이너 */
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* 확인 버튼 */
+.confirmButton {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.confirmButton:hover {
+  background-color: #d9363e;
+}
+
+/* 취소 버튼 */
+.cancelButton {
+  background-color: #ddd;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: 1;
+}
+
+.cancelButton:hover {
+  background-color: #bbb;
+}
