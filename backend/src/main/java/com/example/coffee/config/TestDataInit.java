@@ -80,12 +80,12 @@ public class TestDataInit implements CommandLineRunner {
 
         // 주문 데이터 삽입
         List<Order> orders = List.of(
-                createOrder(user1, "서울시 강남구", "12345", 11000, now.minusWeeks(1), product1, 1, product2, 1),
-                createOrder(user2, "울산시 중구", "55555", 16500, now.minusDays(2), product3, 2, product4, 1),
-                createOrder(user3, "경기도 오산시", "18110", 27000, now.minusDays(1).with(LocalTime.of(10, 0)), product3, 3, product4, 2), // 전날 오전 10시
-                createOrder(user4, "부산시 해운대구", "303030", 8000, now.minusDays(1).with(LocalTime.of(16, 0)), product1, 1, product2, 1), // 전날 오후 4시
-                createOrder(user1, "대전시 서구", "505050", 15000, now.minusHours(10), product4, 2, product2, 1), // 당일 오전 4시
-                createOrder(user3, "인천시 미추홀구", "707070", 21000, now.minusMinutes(30), product1, 3, product3, 1), // 30분 전
+                createOrder(user1, "서울시 강남구", "12345", 10500, now.minusWeeks(1), product1, 1, product2, 1),
+                createOrder(user2, "울산시 중구", "55555", 17000, now.minusDays(2), product3, 2, product4, 1),
+                createOrder(user3, "경기도 오산시", "18110", 28500, now.minusDays(1).with(LocalTime.of(10, 0)), product3, 3, product4, 2), // 전날 오전 10시
+                createOrder(user4, "부산시 해운대구", "303030", 10500, now.minusDays(1).with(LocalTime.of(16, 0)), product1, 1, product2, 1), // 전날 오후 4시
+                createOrder(user1, "대전시 서구", "505050", 17500, now.minusHours(10), product2, 1, product4, 2), // 당일 오전 4시
+                createOrder(user3, "인천시 미추홀구", "707070", 20500, now.minusMinutes(30), product1, 3, product3, 1), // 30분 전
                 createOrder(user3, "인천시 미추홀구", "707070", 11500, now.minusMinutes(10), product2, 1, product4, 1) // 10분 전
         );
 
